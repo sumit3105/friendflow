@@ -10,6 +10,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+        .center-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .form-container {
+            max-width: 600px;
+            width: 100%;
+        }
     </style>
 </head>
 <body class="w3-theme-l5">
@@ -42,17 +52,18 @@
   <a href="#" th:href="@{/user/home}" class="w3-bar-item w3-button w3-padding-large">Home</a>
   <a href="#" th:href="@{/post/create}" class="w3-bar-item w3-button w3-padding-large">Add Post</a>
   <a href="#" th:href="@{/user/profile}" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
+  <a href="#" th:href="@{/logout}" class="w3-bar-item w3-button w3-padding-large">Logout</a>
 </div>
 
 
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
     <!-- The Grid -->
-    <div class="w3-row">
+    <div class="w3-row center-form">
         <!-- Left Column -->
         <div class="w3-col m3">
             <!-- Profile -->
-            <div class="w3-card w3-round w3-white">
+            <div class="form-container w3-card w3-round w3-white">
                 <div class="w3-container">
                     <h4 class="w3-center"><span th:text="${user.firstName}"></span> <span th:text="${user.lastName}"></span></h4>
                     <p class="w3-center"><img th:src="@{${user.profileImage.imageUrl}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>

@@ -39,9 +39,15 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public String showIndexPage(Model model) {
-        model.addAttribute("user", new User());
-        return "index";
+    public String showIndexPage(Model model, HttpSession session) {
+    	User user = UserSessionManager.getLoggedInUser(session);
+    	if(user != null) {
+    		model.addAttribute("user", user);
+    		return "index";    		
+    	}
+    	else {
+    		return "redirect:/login";
+    	}
     }
 
     @PostMapping("/login")
