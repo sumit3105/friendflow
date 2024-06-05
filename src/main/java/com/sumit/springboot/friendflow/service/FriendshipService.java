@@ -1,6 +1,7 @@
 package com.sumit.springboot.friendflow.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,10 @@ public class FriendshipService {
 	public void addFriendship(User user1, User user2) {
 		Friendship f = new Friendship(user1,user2,new Date(),false);
 		friendshipRepo.save(f);
+	}
+	
+	public List<Friendship> getPending(User u){
+		return friendshipRepo.findPending(u);
 	}
 	
 }

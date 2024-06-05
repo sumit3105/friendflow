@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sumit.springboot.friendflow.entities.Friendship;
 import com.sumit.springboot.friendflow.entities.Image;
 import com.sumit.springboot.friendflow.entities.User;
+import com.sumit.springboot.friendflow.service.FriendshipService;
 import com.sumit.springboot.friendflow.service.ImageService;
 import com.sumit.springboot.friendflow.service.UserService;
 import com.sumit.springboot.friendflow.session.UserSessionManager;
@@ -29,6 +31,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private FriendshipService friendService;
 
     private static final String UPLOADED_FOLDER = "src/main/resources/static/img/uploads/";
 
@@ -165,6 +169,14 @@ public class UserController {
     	
     	List<User> all = userService.getAllUserExcept(user);
         model.addAttribute("allUser", all);
+   
+        List<Friendship> pending = friendService.getPending(user);
+        model.addAttribute("pending", pending);
+        
+        
+        for(Friendship f : pending) {
+        	System.out.println(f);        	
+        }
         
         for(User u : all) {
         	System.out.println(u);
