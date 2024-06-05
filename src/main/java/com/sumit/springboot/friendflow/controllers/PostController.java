@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,38 +23,46 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 
 @Controller
+@RequestMapping("/post")
 public class PostController {
 	@Autowired
 	private PostService postService;
-	
-	@GetMapping("/post/create")
+
+	@GetMapping("/create")
 	public String viewPostForm(Model model, HttpSession session) {
 		User user = UserSessionManager.getLoggedInUser(session);
-		if(user != null) {
+		if (user != null) {
 			model.addAttribute("user", user);
 			return "postForm";
-		}
-		else {
+		} else {
 			return "redirect:/login";
 		}
 	}
-	
-	@PostMapping("/post/create")
-	public String addPost(@RequestParam("username") String username, 
-	                      @RequestParam("images") MultipartFile[] imagesData, 
-	                      @RequestParam("caption") String caption, HttpSession session) {
-	    List<Image> images = postService.generateImages(imagesData);
-	    User user = UserSessionManager.getLoggedInUser(session);
 
-	    if (user != null && user.getUsername().equals(username)) {
-	        Post p = new Post(caption, new Date(), user, images);
-	        postService.createPost(p);
-	        return "redirect:/user/profile";
-	    } else {
-	        return "redirect:/login";
-	    }
+	@PostMapping("/create")
+	public String addPost(@RequestParam("username") String username, @RequestParam("images") MultipartFile[] imagesData,
+			@RequestParam("caption") String caption, HttpSession session) {
+		List<Image> images = postService.generateImages(imagesData);
+		User user = UserSessionManager.getLoggedInUser(session);
+
+		if (user != null && user.getUsername().equals(username)) {
+			Post p = new Post(caption, new Date(), user, images);
+			postService.createPost(p);
+			List<Post> pt = user.getPosts();
+			pt.add(p);
+			user.setPosts(pt);
+			System.out.println(user.getPosts());
+			UserSessionManager.setUserLoggedIn(session, user);
+			return "redirect:/user/profile";
+		} else {
+			return "redirect:/login";
+		}
 	}
 
-	
-	
+	@GetMapping("/delete/{id}")
+	public String deletePost(@PathVariable("id") int id, HttpSession session) {
+		postService.removePost(id, session);
+		return "redirect:/user/profile";
+	}
+
 }

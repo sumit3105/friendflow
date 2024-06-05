@@ -36,7 +36,7 @@ public class Post {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "post_id")
     private List<Image> images;
 	

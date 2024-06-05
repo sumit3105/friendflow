@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
-import org.hibernate.Hibernate;
+//import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,6 @@ import com.sumit.springboot.friendflow.entities.User;
 import com.sumit.springboot.friendflow.service.ImageService;
 import com.sumit.springboot.friendflow.service.UserService;
 import com.sumit.springboot.friendflow.session.UserSessionManager;
-import com.sumit.springboot.friendflow.utils.HtmlUtils;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -56,10 +56,8 @@ public class UserController {
         if (userService.authenticateUser(username, password)) {
             User user = userService.getUserByUsername(username);
             UserSessionManager.setUserLoggedIn(session, user);
-            String details = HtmlUtils.convertNewlinesToBr(user.getProfileDetails());
-            model.addAttribute("user", user);
-            model.addAttribute("profile", details);
-            return "index";
+            return "redirect:/user/home";
+            
         } else {
             redirectAttributes.addFlashAttribute("error", true);
             return "redirect:/login";
@@ -123,9 +121,10 @@ public class UserController {
     @GetMapping("/user/profile")
     public String showProfile(Model model, HttpSession session) {
         User user = UserSessionManager.getLoggedInUser(session);
-        Hibernate.initialize(user.getPosts());
+//        Hibernate.initialize(user.getPosts());
         model.addAttribute("user", user);
-        System.out.println(user);
+//        System.out.println("--------------------Posts from user controller--------------------");
+//        System.out.println(user.getPosts());   
 		return "profile";
     }
 
@@ -139,7 +138,7 @@ public class UserController {
     @PostMapping("/user/save")
     public String saveProfile(@RequestParam("username") String username, @RequestParam("firstName") String firstName,
                               @RequestParam("lastName") String lastName, @RequestParam("profileDetails") String profileDetails,
-                              @RequestParam("profileImage") MultipartFile profileImage, Model model) {
+                              @RequestParam("profileImage") MultipartFile profileImage, Model model, HttpSession session) {
 
         User user = userService.getUserByUsername(username);
 
@@ -155,17 +154,22 @@ public class UserController {
         }
 
         userService.updateUser(user);
-        model.addAttribute("user", user);
-
-        return "index";
+        UserSessionManager.setUserLoggedIn(session, user);
+        return "redirect:/user/home";
     }
     
     @GetMapping("/user/home")
     public String viewHome(HttpSession session, Model model) {
     	User user = UserSessionManager.getLoggedInUser(session);
-    	
     	model.addAttribute("user", user);
     	
+    	List<User> all = userService.getAllUserExcept(user);
+        model.addAttribute("allUser", all);
+        
+        for(User u : all) {
+        	System.out.println(u);
+        }
+        
     	return "index";
     }
 }

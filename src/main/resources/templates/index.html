@@ -9,7 +9,15 @@
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+	html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+	
+	
+	.friend-suggestion-img {
+	  width: 70px; /* Set the desired width */
+	  height: 70px; /* Set the desired height */
+	  object-fit: cover; /* Ensure the image maintains its aspect ratio and covers the entire area */
+	  border-radius: 50%; /* Make the images circular */
+	}
 </style>
 </head>
 <body class="w3-theme-l5">
@@ -82,18 +90,6 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
     <!-- Middle Column -->
     <div class="w3-col m7">
     
-      <div class="w3-row-padding">
-        <div class="w3-col m12">
-          <div class="w3-card w3-round w3-white">
-            <div class="w3-container w3-padding">
-              <h6 class="w3-opacity">Social Media template by w3.css</h6>
-              <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
-              <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button> 
-            </div>
-          </div>
-        </div>
-      </div>
-      
       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
         <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
         <span class="w3-right w3-opacity">1 min</span>
@@ -141,11 +137,16 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
     <div class="w3-col m2">
       <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
-          <p>Upcoming Events:</p>
-          <img src="/w3images/forest.jpg" alt="Forest" style="width:100%;">
-          <p><strong>Holiday</strong></p>
-          <p>Friday 15:00</p>
-          <p><button class="w3-button w3-block w3-theme-l4">Info</button></p>
+          <p><strong>Friend Suggestions</strong></p>
+          <div th:each="us : ${allUser}">
+	          <p th:text="${us.firstName} + ' ' + ${us.lastName}"><strong></strong></p>
+	          <img th:src="@{${us.profileImage.imageUrl}}" alt="User" class="friend-suggestion-img">
+	          <p th:text="${us.username}"></p>
+	          <a th:href="@{/friend/create/{username}(username=${us.username})}"><button class="w3-button w3-block w3-theme-d1">Send Request</button></a>
+	          <hr>
+	      </div>
+	      <a th:href="@{/friend/all}"><button class="w3-button w3-block w3-theme-d1">View All</button></a>
+	      <hr>
         </div>
       </div>
       <br>
