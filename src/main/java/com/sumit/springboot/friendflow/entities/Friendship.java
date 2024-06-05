@@ -29,8 +29,21 @@ public class Friendship {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="friendship_date")
     private Date friendshipDate;
+    
+    //status for maintaining friendship
+    //0 - for pending request and 1 - for accepted
+    @Column(name="status")
+    private Boolean status;
 
-    public Long getId() {
+    public Friendship(User user1, User user2, Date friendshipDate, Boolean status) {
+		super();
+		this.user1 = user1;
+		this.user2 = user2;
+		this.friendshipDate = friendshipDate;
+		this.status = status;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -61,6 +74,14 @@ public class Friendship {
     public void setFriendshipDate(Date friendshipDate) {
         this.friendshipDate = friendshipDate;
     }
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
 
 	@Override
 	public String toString() {

@@ -1,9 +1,16 @@
 package com.sumit.springboot.friendflow.repository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
 import com.sumit.springboot.friendflow.entities.User;
 
 
-public interface UserRepository extends JpaRepository<User, String> {
-	User findByUsername(String username);
+public interface UserRepository{
 	
+	public User findByUsername(String username);
+	
+	public List<User> findAllExcept(User user);
+	
+	public void save(User user);
+	
+	public List<User> findAllEx(User user);
 }
