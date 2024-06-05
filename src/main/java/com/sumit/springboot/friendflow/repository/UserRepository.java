@@ -13,4 +13,6 @@ public interface UserRepository{
 	public void save(User user);
 	
 	public List<User> findAllEx(User user);
+	
+	public List<User> findUserWithPendindRequest(User user);
 }

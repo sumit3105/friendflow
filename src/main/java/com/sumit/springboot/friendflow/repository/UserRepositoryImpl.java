@@ -35,9 +35,15 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public List<User> findAllExcept(User user) {
-		TypedQuery<User> ty = entityManager.createQuery("FROM User u WHERE u.username != :uname ORDER BY u.firstName FETCH FIRST 3 ROWS ONLY ", User.class);
-		ty.setParameter("uname", user.getUsername());
-		return ty.getResultList();
+		 String query = "FROM User u " +
+                 "LEFT JOIN Friendship f1 ON u.username = f1.user1.username " +
+                 "LEFT JOIN Friendship f2 ON u.username = f2.user2.username " +
+                 "WHERE f1.id IS NULL AND f2.id IS NULL " +
+                 "AND u.username != :currentUsername ORDER BY u.firstName FETCH FIRST 3 ROWS ONLY";
+  
+		 TypedQuery<User> ty = entityManager.createQuery(query, User.class);
+		 ty.setParameter("currentUsername", user.getUsername());
+		 return ty.getResultList();
 	}
 
 	@Override
@@ -48,9 +54,26 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public List<User> findAllEx(User user) {
-		TypedQuery<User> ty = entityManager.createQuery("FROM User u WHERE u.username != :uname", User.class);
-		ty.setParameter("uname", user.getUsername());
+		String query = "FROM User u " +
+                "LEFT JOIN Friendship f1 ON u.username = f1.user1.username " +
+                "LEFT JOIN Friendship f2 ON u.username = f2.user2.username " +
+                "WHERE f1.id IS NULL AND f2.id IS NULL " +
+                "AND u.username != :currentUsername ORDER BY u.firstName";
+		
+		TypedQuery<User> ty = entityManager.createQuery(query, User.class);
+		ty.setParameter("currentUsername", user.getUsername());
 		return ty.getResultList();
+	}
+
+	@Override
+	public List<User> findUserWithPendindRequest(User user) {
+		String query = "SELECT u FROM User u " +
+                "JOIN Friendship f ON u.username = f.user2.username " +
+                "WHERE f.user1.username = :currentUsername AND f.status = false";
+ 
+		 TypedQuery<User> ty = entityManager.createQuery(query, User.class);
+		 ty.setParameter("currentUsername", user.getUsername());
+		 return ty.getResultList();
 	}
 
 }

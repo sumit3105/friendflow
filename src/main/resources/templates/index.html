@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title th:text="'Welcome, ' + ${user.firstName}">Welcome | </title>
+<title th:text="'Welcome, ' + ${user.firstName}"></title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -151,22 +151,35 @@
       </div>
       <br>
       
-      <div class="w3-card w3-round w3-white w3-center">
-        <div class="w3-container">
-          <p>Friend Request</p>
-          <img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>
-          <span>Jane Doe</span>
-          <div class="w3-row w3-opacity">
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
-            </div>
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
+    <div class="w3-card w3-round w3-white w3-center">
+	    <div class="w3-container">
+	        <p>Friend Requests</p>
+	        <div th:if="${pending == null or pending.isEmpty()}">
+	            <p>No pending requests</p>
+	        </div>
+	        <div th:if="${pending != null and !pending.isEmpty()}">
+	            <div th:each="u : ${pending}">
+		                <img th:src="@{${u.user1.profileImage.imageUrl}}" alt="Profile" class="friend-suggestion-img"><br>
+		                <span th:text="${u.user1.firstName + ' ' + u.user1.lastName}"></span><br>
+		                <span th:text="'(' + ${u.user1.username + ')'}"></span>
+		                <div class="w3-row w3-opacity">
+		                    <div class="w3-half">
+		                        <button class="w3-button w3-block w3-green w3-section" title="Accept">
+		                            <i class="fa fa-check"></i>
+		                        </button>
+		                    </div>
+		                    <div class="w3-half">
+		                        <button class="w3-button w3-block w3-red w3-section" title="Decline">
+		                            <i class="fa fa-remove"></i>
+		                        </button>
+		                    </div>
+	               		</div>
+	               <br>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<br>
       
       <div class="w3-card w3-round w3-white w3-padding-16 w3-center">
         <p>ADS</p>

@@ -42,6 +42,15 @@ public class Friendship {
 		this.friendshipDate = friendshipDate;
 		this.status = status;
 	}
+    
+    
+
+	public Friendship() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 
 	public Long getId() {
         return id;

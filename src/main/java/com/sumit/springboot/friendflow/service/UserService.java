@@ -44,4 +44,8 @@ public class UserService {
 		return allUser;
 	}
 	
+	public List<User> getUserWithPendindRequest(User user){
+		return userRepository.findUserWithPendindRequest(user);
+	}
+	
 }
