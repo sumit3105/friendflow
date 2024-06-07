@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 	html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
@@ -20,7 +21,9 @@
 </style>
 </head>
 <body class="w3-theme-l5">
-
+	<div id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
 <!-- Navbar -->
 <div class="w3-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
@@ -180,6 +183,8 @@
 <footer class="w3-container w3-theme-d5">
   <p>Powered by <a href="#" target="_blank">w3.css</a></p>
 </footer>
+
+ <script type="text/javascript" th:src="@{/js/script.js}"></script>
  
 <script>
 // Accordion

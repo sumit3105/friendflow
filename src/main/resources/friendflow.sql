@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2024 at 12:41 PM
+-- Generation Time: Jun 05, 2024 at 12:37 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -58,8 +58,17 @@ CREATE TABLE `friendships` (
   `friendship_date` datetime(6) DEFAULT NULL,
   `friendship_id` bigint(20) NOT NULL,
   `user1_username` varchar(255) DEFAULT NULL,
-  `user2_username` varchar(255) DEFAULT NULL
+  `user2_username` varchar(255) DEFAULT NULL,
+  `status` bit(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `friendships`
+--
+
+INSERT INTO `friendships` (`friendship_date`, `friendship_id`, `user1_username`, `user2_username`, `status`) VALUES
+('2024-06-05 15:07:22.000000', 1, 'sumit31', 'aman22dec', b'0'),
+('2024-06-05 16:01:33.000000', 2, 'darshit1234', 'sodamasala', b'0');
 
 -- --------------------------------------------------------
 
@@ -86,7 +95,21 @@ INSERT INTO `images` (`post_id`, `img_id`, `img_name`, `img_url`) VALUES
 (NULL, 5, '1000003500.jpg', '/img/uploads/1000003500.jpg'),
 (NULL, 6, '1000003500.jpg', '/img/uploads/1000003500.jpg'),
 (NULL, 7, '1000003500.jpg', '/img/uploads/1000003500.jpg'),
-(NULL, 8, 'IMG20230115153854.jpg', '/img/uploads/IMG20230115153854.jpg');
+(NULL, 8, 'IMG20230115153854.jpg', '/img/uploads/IMG20230115153854.jpg'),
+(5, 15, '-6176858799755866029_121.jpg', '/img/post/-6176858799755866029_121.jpg'),
+(5, 16, '-6176858799755866030_121.jpg', '/img/post/-6176858799755866030_121.jpg'),
+(5, 17, '-6176858799755866032_121.jpg', '/img/post/-6176858799755866032_121.jpg'),
+(6, 18, '-6177005855141113944_121.jpg', '/img/post/-6177005855141113944_121.jpg'),
+(NULL, 19, 'IMG_20200114_181101.jpg', '/img/uploads/IMG_20200114_181101.jpg'),
+(NULL, 20, 'IMG_20200114_181101.jpg', '/img/uploads/IMG_20200114_181101.jpg'),
+(NULL, 26, 'IMG-20220601-WA0000.jpg', '/img/uploads/IMG-20220601-WA0000.jpg'),
+(10, 29, 'IMG20230115153854.jpg', '/img/post/IMG20230115153854.jpg'),
+(NULL, 30, 'IMG20220630091223.jpg', '/img/uploads/IMG20220630091223.jpg'),
+(15, 35, 'IMG20230115153854.jpg', '/img/post/IMG20230115153854.jpg'),
+(NULL, 36, '1000001181.jpg', '/img/uploads/1000001181.jpg'),
+(NULL, 37, 'IMG20221005172141.jpg', '/img/uploads/IMG20221005172141.jpg'),
+(NULL, 38, 'IMG20230116145204.jpg', '/img/uploads/IMG20230116145204.jpg'),
+(16, 39, '-6177005855141113938_121.jpg', '/img/post/-6177005855141113938_121.jpg');
 
 -- --------------------------------------------------------
 
@@ -103,6 +126,17 @@ CREATE TABLE `posts` (
   `caption` varchar(255) DEFAULT NULL,
   `user_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`dislikes`, `likes`, `pinned`, `post_id`, `post_date`, `caption`, `user_id`) VALUES
+(0, 0, 0, 5, '2024-05-28 15:01:52.000000', 'School Farewell... ❤️❤️❤️\r\nMeeting friends one last time 🤗🤗', 'sumit31'),
+(0, 0, 0, 6, '2024-05-28 15:29:34.000000', 'School Farewell... ❤️❤️❤️\r\nMeeting friends one last time 🤗🤗', 'aman22dec'),
+(0, 0, 0, 10, '2024-06-01 15:06:10.000000', 'no caption needed..........', 'sujal31'),
+(0, 0, 0, 15, '2024-06-03 10:50:14.000000', 'nothing.......', 'sujal31'),
+(0, 0, 0, 16, '2024-06-05 14:17:09.000000', 'Farewell......', 'sodamasala');
 
 -- --------------------------------------------------------
 
@@ -124,8 +158,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`profile_img`, `fname`, `lname`, `password`, `profile_details`, `username`) VALUES
-(8, 'Aman', 'Deshani', '12345678', 'Movie Lover 💻❤️❤️', 'aman22dec'),
-(7, 'Sumit', 'Gohil', 'sujal3105', 'Cricket Lover - 🏏🏏\r\nDDU - CE\'2026', 'sumit31');
+(20, 'Aman', 'Deshani', '12345678', 'Movie Lover 💻❤️❤️\r\nKing 👑👑', 'aman22dec'),
+(36, 'Darshit', 'Talsaniya', '12345678', 'No bio needed...', 'darshit1234'),
+(38, 'Dev', 'Shah', '12345678', 'What is Bio ????', 'sodamasala'),
+(26, 'Sujal', 'Gohil', 'sumit3105', 'No Bio Needed 😃😃', 'sujal31'),
+(30, 'Sumit', 'Gohil', 'sujal3105', 'Cricket Lover - 🏏🏏\r\nDDU - CE\'2026\r\nIndian ❤️', 'sumit31'),
+(37, 'Dev', 'Shah', '12345678', 'Wtf ? .....', '_devxoxo_');
 
 --
 -- Indexes for dumped tables
@@ -195,19 +233,19 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `friendships`
 --
 ALTER TABLE `friendships`
-  MODIFY `friendship_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `friendship_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `img_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `img_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
