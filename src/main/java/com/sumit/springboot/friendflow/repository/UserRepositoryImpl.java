@@ -35,11 +35,11 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public List<User> findAllExcept(User user) {
-		 String query = "FROM User u " +
-                 "LEFT JOIN Friendship f1 ON u.username = f1.user1.username " +
-                 "LEFT JOIN Friendship f2 ON u.username = f2.user2.username " +
-                 "WHERE f1.id IS NULL AND f2.id IS NULL " +
-                 "AND u.username != :currentUsername ORDER BY u.firstName FETCH FIRST 3 ROWS ONLY";
+		 String query = "SELECT u FROM User u WHERE u.username NOT IN (" +
+                 "SELECT f.user1.username FROM Friendship f WHERE f.user2.username = :currentUsername " +
+                 "UNION " +
+                 "SELECT f.user2.username FROM Friendship f WHERE f.user1.username = :currentUsername) " +
+                 "AND u.username != :currentUsername ORDER BY u.username FETCH FIRST 3 ROWS ONLY";
   
 		 TypedQuery<User> ty = entityManager.createQuery(query, User.class);
 		 ty.setParameter("currentUsername", user.getUsername());
@@ -54,11 +54,11 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public List<User> findAllEx(User user) {
-		String query = "FROM User u " +
-                "LEFT JOIN Friendship f1 ON u.username = f1.user1.username " +
-                "LEFT JOIN Friendship f2 ON u.username = f2.user2.username " +
-                "WHERE f1.id IS NULL AND f2.id IS NULL " +
-                "AND u.username != :currentUsername ORDER BY u.firstName";
+		String query = "SELECT u FROM User u WHERE u.username NOT IN (" +
+                "SELECT f.user1.username FROM Friendship f WHERE f.user2.username = :currentUsername " +
+                "UNION " +
+                "SELECT f.user2.username FROM Friendship f WHERE f.user1.username = :currentUsername) " +
+                "AND u.username != :currentUsername ORDER BY u.username";
 		
 		TypedQuery<User> ty = entityManager.createQuery(query, User.class);
 		ty.setParameter("currentUsername", user.getUsername());

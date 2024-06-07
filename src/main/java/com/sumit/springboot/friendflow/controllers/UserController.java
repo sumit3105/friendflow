@@ -46,8 +46,7 @@ public class UserController {
     public String showIndexPage(Model model, HttpSession session) {
     	User user = UserSessionManager.getLoggedInUser(session);
     	if(user != null) {
-    		model.addAttribute("user", user);
-    		return "index";    		
+    		return "redirect:/user/home";    		
     	}
     	else {
     		return "redirect:/login";
@@ -107,12 +106,14 @@ public class UserController {
     public String signUp(@RequestParam("username") String username, @RequestParam("password") String password,
                          @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
                          @RequestParam("profileDetails") String profileDetails,
-                         @RequestParam("profileImage") MultipartFile profileImage, Model model) {
+                         @RequestParam("profileImage") MultipartFile profileImage, Model model, RedirectAttributes redirectAttributes) {
 
-        if (profileImage.isEmpty()) {
-            model.addAttribute("message", "Please select an image to upload");
-            return "login/signup";
-        }
+    	User u = userService.getUserByUsername(username);
+    	
+    	if(u != null) {
+    		redirectAttributes.addFlashAttribute("error", true);
+    		return "redirect:/signup";
+    	}
 
         Image image = generateImage(profileImage);
 

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 User Not Found</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -24,6 +25,9 @@
   </style>
 </head>
 <body>
+	<div id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
   <div class="w3-container w3-card-4 w3-white w3-round-large">
     <i class="fa-solid fa-triangle-exclamation w3-text-red w3-xxxlarge"></i>
     <h1 class="w3-text-red">404 User Not Found</h1>
@@ -32,5 +36,6 @@
       <i class="fa-solid fa-sign-in-alt"></i> Go to Login
     </a>
   </div>
+  <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </body>
 </html>

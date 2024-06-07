@@ -26,14 +26,14 @@
                         </div>
                         <div class="form-group">
                             <label for="profileDetails">Profile Details</label>
-                            <textarea id="profileDetails" name="profileDetails" class="form-control"></textarea>
+                            <textarea id="profileDetails" name="profileDetails" class="form-control" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="profileImage">Profile Image</label>
-                            <input type="file" id="profileImage" name="profileImage" class="form-control">
+                            <input type="file" id="profileImage" name="profileImage" class="form-control" required>
                         </div>
-                        <div th:if="${message}" class="alert alert-danger" role="alert">
-							Please select an image to upload</div>
+						<div th:if="${error}" class="alert alert-danger" role="alert">
+							Username already taken, please go with another username.</div>
                         <button type="submit" class="btn btn-success">Sign Up</button>
                         <a th:href="@{/login}" class="text-secondary">Already have an account</a>
                     </form>
