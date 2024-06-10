@@ -32,7 +32,7 @@
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="#" th:href="@{/user/home}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Logo</a>
   <a href="#" th:href="@{/post/create}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Add Post"><i class="fa fa-plus"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
+  <a href="#" th:href="@{/friend/view/{username}(username=${user.username})}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="View Friends"><i class="fa fa-user"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
   <div class="w3-dropdown-hover w3-hide-small">
     <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>     
@@ -93,49 +93,32 @@
     
     <!-- Middle Column -->
     <div class="w3-col m7">
-    
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <span class="w3-right w3-opacity">1 min</span>
-        <h4>John Doe</h4><br>
-        <hr class="w3-clear">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          <div class="w3-row-padding" style="margin:0 -16px">
-            <div class="w3-half">
-              <img src="/w3images/lights.jpg" style="width:100%" alt="Northern Lights" class="w3-margin-bottom">
-            </div>
-            <div class="w3-half">
-              <img src="/w3images/nature.jpg" style="width:100%" alt="Nature" class="w3-margin-bottom">
-          </div>
-        </div>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
-      </div>
-      
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src="/w3images/avatar5.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <span class="w3-right w3-opacity">16 min</span>
-        <h4>Jane Doe</h4><br>
-        <hr class="w3-clear">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
-      </div>  
-
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src="/w3images/avatar6.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <span class="w3-right w3-opacity">32 min</span>
-        <h4>Angie Jane</h4><br>
-        <hr class="w3-clear">
-        <p>Have you seen this?</p>
-        <img src="/w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
-      </div> 
-      
+    	<div class="w3-container">
+    		<div th:if="${posts == null or posts.isEmpty()}">
+	        	<p>Seems like you don't have friends or your friends do not have any posts yet. Make friends to view their posts...</p>
+	    	</div>
+	    	<div th:if="${posts != null and !posts.isEmpty()}">
+	    		<div th:each="post : ${posts}">
+			      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+			        <img th:src="@{${post.user.profileImage.imageUrl}}" alt="Profile" class="w3-left w3-circle w3-margin-right" style="width:50px;height:45px;">
+			        <span class="w3-right w3-opacity" th:text="${#dates.format(post.postDate, 'MMM dd, yyyy HH:mm')}"></span>
+			        <h4 th:text="${post.user.firstName} + ' ' + ${post.user.lastName}"></h4><br>
+			        <hr class="w3-clear">
+			        <p th:text="${post.caption}"></p>
+			         <div class="w3-row-padding" style="margin:0 -16px" th:if="${post.images != null}">
+					      <div class="w3-half" th:each="image : ${post.images}">
+					        <img th:src="${image.imageUrl}" style="width:100%;height:250px" alt="Image" class="w3-margin-bottom">
+					      </div>
+					 </div>
+			        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
+			        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
+			        </div>
+			      </div>
+			 </div>
+	      </div>
+	 </div>
     <!-- End Middle Column -->
-    </div>
+    
     
     <!-- Right Column -->
     <div class="w3-col m2">
@@ -168,14 +151,14 @@
 		                <span th:text="'(' + ${u.user1.username + ')'}"></span>
 		                <div class="w3-row w3-opacity">
 		                    <div class="w3-half">
-		                        <button class="w3-button w3-block w3-green w3-section" title="Accept">
+		                        <a th:href="@{/friend/accept/{id}(id=${u.id})}"><button class="w3-button w3-block w3-green w3-section" title="Accept">
 		                            <i class="fa fa-check"></i>
-		                        </button>
+		                        </button></a>
 		                    </div>
 		                    <div class="w3-half">
-		                        <button class="w3-button w3-block w3-red w3-section" title="Decline">
+		                        <a th:href="@{/friend/decline/{id}(id=${u.id})}"><button class="w3-button w3-block w3-red w3-section" title="Decline">
 		                            <i class="fa fa-remove"></i>
-		                        </button>
+		                        </button></a>
 		                    </div>
 	               		</div>
 	               <br>

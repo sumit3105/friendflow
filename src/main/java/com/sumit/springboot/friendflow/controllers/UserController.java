@@ -17,9 +17,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sumit.springboot.friendflow.entities.Friendship;
 import com.sumit.springboot.friendflow.entities.Image;
+import com.sumit.springboot.friendflow.entities.Post;
 import com.sumit.springboot.friendflow.entities.User;
 import com.sumit.springboot.friendflow.service.FriendshipService;
 import com.sumit.springboot.friendflow.service.ImageService;
+import com.sumit.springboot.friendflow.service.PostService;
 import com.sumit.springboot.friendflow.service.UserService;
 import com.sumit.springboot.friendflow.session.UserSessionManager;
 
@@ -33,6 +35,8 @@ public class UserController {
     private ImageService imageService;
     @Autowired
     private FriendshipService friendService;
+    @Autowired
+    private PostService postService;
 
     private static final String UPLOADED_FOLDER = "src/main/resources/static/img/uploads/";
 
@@ -129,7 +133,10 @@ public class UserController {
 //        Hibernate.initialize(user.getPosts());
         model.addAttribute("user", user);
 //        System.out.println("--------------------Posts from user controller--------------------");
-//        System.out.println(user.getPosts());   
+//        System.out.println(user.getPosts());
+        
+        List<Friendship> pending = friendService.getPending(user);
+        model.addAttribute("pending", pending);
 		return "profile";
     }
 
@@ -174,6 +181,8 @@ public class UserController {
         List<Friendship> pending = friendService.getPending(user);
         model.addAttribute("pending", pending);
         
+        List<Post> posts = postService.getPostsOfFriends(user);
+        model.addAttribute("posts", posts);
         
         for(Friendship f : pending) {
         	System.out.println(f);        	

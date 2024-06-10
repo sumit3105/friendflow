@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Profile Update</title>
+    <title>All Friends</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -18,14 +18,21 @@
             min-height: 100vh;
         }
         .form-container {
-            max-width: 600px;
+            max-width: 350px;
             width: 100%;
         }
+        
+        .friend-suggestion-img {
+		  width: 100px; 
+		  height: 100px; 
+		  object-fit: cover;
+		  border-radius: 50%;
+		}
     </style>
 </head>
 <body class="w3-theme-l5">
 	<div id="loadingSpinner">
-	    <div class="spinner"></div>
+		<div class="spinner"></div>
 	</div>
 <!-- Navbar -->
 <div class="w3-top">
@@ -62,33 +69,16 @@
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
     <!-- The Grid -->
     <div class="w3-row center-form">
-        <!-- Form Container -->
+        <!-- Main Container -->
         <div class="form-container w3-card w3-round w3-white">
             <div class="w3-container">
-                <h4 class="w3-center">Add Post</h4>
-                <p class="w3-center"><img th:src="@{${user.profileImage.imageUrl}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
-                <hr>
-                <form action="/" th:action="@{/post/create}" method="post" enctype="multipart/form-data">
-                    <div class="w3-container">
-                        <label for="images">Select Images</label>
-                        <input type="file" name="images" class="w3-input w3-border w3-margin-bottom" multiple>
-                    </div>
-                    <div class="w3-container">
-                        <label for="firstName">Username</label>
-                        <input type="text" name="username" th:value="${user.username}" class="w3-input w3-border w3-margin-bottom" readonly>
-                    </div>
-                    <div class="w3-container">
-                        <label for="firstName">By</label>
-                        <input type="text" name="firstName" th:value="${user.firstName}" class="w3-input w3-border w3-margin-bottom" readonly>
-                    </div>
-                    <div class="w3-container">
-                        <label for="caption">Caption</label>
-                        <textarea name="caption" class="w3-input w3-border w3-margin-bottom" rows="4" placeholder="Enter Caption Here..."></textarea>
-                    </div>
-                    <div class="w3-container">
-                        <input type="submit" class="w3-button w3-theme w3-round w3-padding w3-margin-bottom w3-margin-left" value="Post">
-                    </div>
-                </form>
+                <h4 class="w3-center"><strong>Your Friends</strong></h4>
+                <div th:each="us : ${friends}" class="w3-center">
+		          <img th:src="@{${us.profileImage.imageUrl}}" alt="User" class="friend-suggestion-img">
+		          <p th:text="${us.firstName} + ' ' + ${us.lastName}"><strong></strong></p>
+		          <p th:text="'(' + ${us.username + ')'}"></p>
+		          <hr>
+		      	</div>
             </div>
         </div>
     </div>
@@ -106,7 +96,6 @@
 </footer>
 <script type="text/javascript" th:src="@{/js/script.js}"></script>
 <script>
-
 // Accordion
 function myFunction(id) {
     var x = document.getElementById(id);

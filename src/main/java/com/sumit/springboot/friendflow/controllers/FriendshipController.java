@@ -49,4 +49,40 @@ public class FriendshipController {
 		return "allProfile";
 	}
 	
+	@GetMapping("/accept/{id}")
+	public String acceptFriendship(@PathVariable("id") Long id, HttpSession session) {
+		if(friendshipService.acceptFriend(id,session)) {
+			return "redirect:/user/home";
+		}
+		else {
+			return "403";
+		}
+	}
+	
+	@GetMapping("/decline/{id}")
+	public String declineFriendship(@PathVariable("id") Long id, HttpSession session) {
+		if(friendshipService.declineFriend(id,session)) {
+			return "redirect:/user/home";
+		}
+		else {
+			return "403";
+		}
+	}
+	
+	@GetMapping("/view/{username}")
+	public String viewAllFriends(@PathVariable("username") String username, HttpSession session, Model model) {
+		User u = UserSessionManager.getLoggedInUser(session);
+		
+		if(u.getUsername().equals(username)) {
+			List<User> friends = friendshipService.getAllFriends(username);
+			model.addAttribute("friends", friends);
+			model.addAttribute("user", u);
+			return "viewFriends";
+		}
+		else {
+			return "403";
+		}
+		
+	}
+	
 }
