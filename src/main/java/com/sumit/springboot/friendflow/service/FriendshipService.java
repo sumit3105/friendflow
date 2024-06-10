@@ -10,6 +10,9 @@ import com.sumit.springboot.friendflow.entities.User;
 import com.sumit.springboot.friendflow.entities.Friendship;
 
 import com.sumit.springboot.friendflow.repository.FriendshipRepo;
+import com.sumit.springboot.friendflow.session.UserSessionManager;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class FriendshipService {
@@ -26,4 +29,33 @@ public class FriendshipService {
 		return friendshipRepo.findPending(u);
 	}
 	
+	public boolean acceptFriend(Long id, HttpSession session) {
+		User u = UserSessionManager.getLoggedInUser(session);
+		Friendship f = friendshipRepo.findById(id);
+		
+		if(f.getUser2().getUsername().equals(u.getUsername())) {
+			f.setStatus(true);
+			friendshipRepo.save(f);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean declineFriend(Long id, HttpSession session) {
+		User u = UserSessionManager.getLoggedInUser(session);
+		Friendship f = friendshipRepo.findById(id);
+		if(f.getUser2().getUsername().equals(u.getUsername())) {
+			friendshipRepo.delete(f);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public List<User> getAllFriends(String username){
+		return friendshipRepo.findAllFriends(username);
+	}
 }

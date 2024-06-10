@@ -107,4 +107,8 @@ public class PostService {
 			UserSessionManager.setUserLoggedIn(session, user);
 		}
 	}
+	
+	public List<Post> getPostsOfFriends(User u){
+		return postRepository.findPostsOfFriends(u);
+	}
 }

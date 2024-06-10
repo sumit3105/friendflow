@@ -10,4 +10,10 @@ public interface FriendshipRepo {
 	
 	public List<Friendship> findPending(User u);
 	
+	public Friendship findById(Long id);
+	
+	public void delete(Friendship f);
+	
+	public List<User> findAllFriends(String username);
+	
 }
