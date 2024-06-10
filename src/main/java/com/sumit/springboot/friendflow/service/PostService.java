@@ -84,18 +84,12 @@ public class PostService {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
-				imageRepository.deleteAll(images);
-				System.out.println("image removed-1...");
-				
+					imageRepository.delete(image);
+				}				
 			}
 			
-			System.out.println("image removed-2...");
 			System.out.println(p.getImages().removeAll(images));
-			System.out.println("image removed-3...");
-			postRepository.delete(p);
-			System.out.println("image removed-4...");
-			
+			postRepository.delete(p);			
 			
 			List<Post> pt = user.getPosts();
 			

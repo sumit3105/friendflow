@@ -1,10 +1,11 @@
 package com.sumit.springboot.friendflow.repository;
 
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.sumit.springboot.friendflow.entities.Image;
 
-public interface ImageRepository extends JpaRepository<Image, Long>{
+public interface ImageRepository {
+	
+	public void save(Image i);
+	
+	public void delete(Image i);
 	
 }

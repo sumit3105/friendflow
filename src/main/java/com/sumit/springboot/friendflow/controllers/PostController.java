@@ -61,8 +61,16 @@ public class PostController {
 
 	@GetMapping("/delete/{id}")
 	public String deletePost(@PathVariable("id") int id, HttpSession session) {
-		postService.removePost(id, session);
-		return "redirect:/user/profile";
+		User u = UserSessionManager.getLoggedInUser(session);
+		Post p = postService.getPostById(id);
+		
+		if(p.getUser().getUsername().equals(u.getUsername())) {
+			postService.removePost(id, session);
+			return "redirect:/user/profile";
+		}
+		else {
+			return "403";
+		}
 	}
 
 }

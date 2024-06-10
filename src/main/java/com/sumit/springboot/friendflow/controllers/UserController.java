@@ -159,10 +159,17 @@ public class UserController {
         user.setProfileDetails(profileDetails);
 
         if (!profileImage.isEmpty()) {
-            Image image = generateImage(profileImage);
+            Image newImg = generateImage(profileImage);
             Image old = user.getProfileImage();
+            //to delete image from resources...
+            try {
+				Files.deleteIfExists(Paths.get(UPLOADED_FOLDER + old.getName()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
             imageService.deleteImage(old);
-            user.setProfileImage(image);
+            user.setProfileImage(newImg);
+            
         }
 
         userService.updateUser(user);
