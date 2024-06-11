@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title th:text="'Welcome, ' + ${user.firstName}"></title>
+<title th:text="'Profile of ' + ${other.firstName}"></title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -11,15 +11,19 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 	html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
-	
-	
+	#delete{
+		font-size: 20px;
+		color: red;
+	}
+	#edit{
+		font-size: 20px;
+	}
 	.friend-suggestion-img {
 	  width: 70px; /* Set the desired width */
 	  height: 70px; /* Set the desired height */
 	  object-fit: cover; /* Ensure the image maintains its aspect ratio and covers the entire area */
 	  border-radius: 50%; /* Make the images circular */
 	}
-
 </style>
 </head>
 <body class="w3-theme-l5">
@@ -66,104 +70,44 @@
       <!-- Profile -->
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
-         <h4 class="w3-center"><span th:text="${user.firstName}"> </span>  <span th:text="${user.lastName}"></span></h4>
-         <p class="w3-center"><img th:src="@{${user.profileImage.imageUrl}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <h4 class="w3-center"><span th:text="${other.firstName}"> </span>  <span th:text="${other.lastName}"></span></h4>
+         <p class="w3-center"><img th:src="${other.profileImage.imageUrl}" class="w3-circle" style="height:106px;width:106px" alt="Profile"></p>
          <hr>
-         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> <span th:text="${user.profileDetails}">  </span>
-         <form action="/" th:action="@{/user/update}" method="post">
-         	<input type="hidden" name="username" th:value="${user.username}">
-         	<input type="submit" class="w3-button w3-theme w3-round w3-padding w3-margin-bottom w3-margin-left" value="Update Profile">
-         </form>
+         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> <span th:text="${other.profileDetails}">  </span></p>
         </div>
       </div>
       <br>
-      
-      <!-- Friend request -->
-      <div class="w3-card w3-round w3-white w3-center">
-	    <div class="w3-container">
-	        <p>Friend Requests</p>
-	        <div th:if="${pending == null or pending.isEmpty()}">
-	            <p>No pending requests</p>
-	        </div>
-	        <div th:if="${pending != null and !pending.isEmpty()}">
-	            <div th:each="u : ${pending}">
-						<a th:href="@{/user/{username}(username=${u.user1.username})}">            
-		                	<img th:src="@{${u.user1.profileImage.imageUrl}}" alt="Profile" class="friend-suggestion-img">
-		                </a>
-		                <br>
-		                <span th:text="${u.user1.firstName + ' ' + u.user1.lastName}"></span><br>
-		                <span th:text="'(' + ${u.user1.username + ')'}"></span>
-		                <div class="w3-row w3-opacity">
-		                    <div class="w3-half">
-		                        <a th:href="@{/friend/accept/{id}(id=${u.id})}"><button class="w3-button w3-block w3-green w3-section" title="Accept">
-		                            <i class="fa fa-check"></i>
-		                        </button></a>
-		                    </div>
-		                    <div class="w3-half">
-		                        <a th:href="@{/friend/decline/{id}(id=${u.id})}"><button class="w3-button w3-block w3-red w3-section" title="Decline">
-		                            <i class="fa fa-remove"></i>
-		                        </button></a>
-		                    </div>
-	               		</div>
-	               		<br>
-	            	</div>
-	        	</div>
-	    	</div>
-		</div>
-
     <!-- End Left Column -->
     </div>
     
     <!-- Middle Column -->
     <div class="w3-col m7">
-    	<div class="w3-container">
-    		<div th:if="${posts == null or posts.isEmpty()}" class="w3-container w3-card w3-round w3-white">
-	        	<p>Seems like you don't have friends 🧐 or your friends do not have any posts yet. Make friends to view their posts...🙏🙏🙏</p>
-	    	</div>
-	    	<div th:if="${posts != null and !posts.isEmpty()}">
-	    		<div th:each="post : ${posts}">
-			      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-			      	<a th:href="@{/user/{username}(username=${post.user.username})}">
-			        	<img th:src="@{${post.user.profileImage.imageUrl}}" alt="Profile" class="w3-left w3-circle w3-margin-right" style="width:50px;height:45px;">
-			       	</a>
-			        <span class="w3-right w3-opacity" th:text="${#dates.format(post.postDate, 'MMM dd, yyyy HH:mm')}"></span>
-			        <h4 th:text="${post.user.firstName} + ' ' + ${post.user.lastName}"></h4><br>
-			        <hr class="w3-clear">
-			        <p th:text="${post.caption}"></p>
-			         <div class="w3-row-padding" style="margin:0 -16px" th:if="${post.images != null}">
-					      <div class="w3-half" th:each="image : ${post.images}">
-					        <img th:src="${image.imageUrl}" style="width:100%;height:250px" alt="Image" class="w3-margin-bottom">
-					      </div>
-					 </div>
-			        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
-			        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
-			        </div>
-			      </div>
-			 </div>
-	      </div>  
-	 </div>
+      <!-- User Posts -->
+		<div th:each="post : ${posts}">
+		  <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+		    <a th:href="@{/user/{username}(username=${other.username})}">
+		    	<img th:src="${other.profileImage.imageUrl}" alt="Profile" class="w3-left w3-circle w3-margin-right" style="width:50px;height:45px;">
+		    </a>
+		    <span class="w3-right w3-opacity" th:text="${#dates.format(post.postDate, 'MMM dd, yyyy HH:mm')}"></span>
+		  
+		    <h4 th:text="${other.firstName} + ' ' + ${other.lastName}"></h4><br>
+		    
+		    <p th:text="${post.caption}"></p>
+		    <div class="w3-row-padding" style="margin:0 -16px" th:if="${post.images != null}">
+		      <div class="w3-half" th:each="image : ${post.images}">
+		        <img th:src="${image.imageUrl}" style="width:100%;height:250px" alt="Image" class="w3-margin-bottom">
+		      </div>
+		    </div>
+		    <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button>
+		    <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button>
+		  </div>
+		</div>
+	</div>
     <!-- End Middle Column -->
     
     
     <!-- Right Column -->
     <div class="w3-col m2">
-      <div class="w3-card w3-round w3-white w3-center">
-        <div class="w3-container">
-          <p><strong>Friend Suggestions</strong></p>
-          <div th:each="us : ${allUser}">
-	          <p th:text="${us.firstName} + ' ' + ${us.lastName}"><strong></strong></p>
-	          <a th:href="@{/user/{username}(username=${us.username})}">
-	          	<img th:src="@{${us.profileImage.imageUrl}}" alt="User" class="friend-suggestion-img">
-	          </a>
-	          <p th:text="${us.username}"></p>
-	          <a th:href="@{/friend/create/{username}(username=${us.username})}"><button class="w3-button w3-block w3-theme-d1">Send Request</button></a>
-	          <hr>
-	      </div>
-	      <a th:href="@{/friend/all}"><button class="w3-button w3-block w3-theme-d1">View All</button></a>
-	      <hr>
-        </div>
-      </div>
-      <br>    
     <!-- End Right Column -->
     </div>
     
@@ -180,11 +124,12 @@
 </footer>
 
 <footer class="w3-container w3-theme-d5">
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <p>Powered by <a href="#" target="_blank">w3.css</a></p>
 </footer>
- <script type="text/javascript" th:src="@{/js/script.js}"></script>
-<script>
 
+ <script type="text/javascript" th:src="@{/js/script.js}"></script>
+ 
+<script>
 // Accordion
 function myFunction(id) {
   var x = document.getElementById(id);
@@ -192,7 +137,7 @@ function myFunction(id) {
     x.className += " w3-show";
     x.previousElementSibling.className += " w3-theme-d1";
   } else { 
-    x.className = x.className.replace("w3-show", "");
+    x.className = x.className.replace(" w3-show", "");
     x.previousElementSibling.className = 
     x.previousElementSibling.className.replace(" w3-theme-d1", "");
   }
@@ -210,4 +155,4 @@ function openNav() {
 </script>
 
 </body>
-</html> 
+</html>

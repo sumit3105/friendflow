@@ -50,4 +50,14 @@ public class PostRepositoryImpl implements PostRepository {
 		return ty.getResultList();
 	}
 
+	@Override
+	public List<Post> findPostOfUser(String username) {
+		String query = "SELECT p FROM Post p WHERE p.user.username = :username";
+		
+		TypedQuery<Post> ty = entityManager.createQuery(query, Post.class);
+		ty.setParameter("username", username);
+		
+		return ty.getResultList();
+	}
+
 }

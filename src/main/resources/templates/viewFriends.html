@@ -74,7 +74,9 @@
             <div class="w3-container">
                 <h4 class="w3-center"><strong>Your Friends</strong></h4>
                 <div th:each="us : ${friends}" class="w3-center">
-		          <img th:src="@{${us.profileImage.imageUrl}}" alt="User" class="friend-suggestion-img">
+                  <a th:href="@{/user/{username}(username=${us.username})}">	
+		          	<img th:src="@{${us.profileImage.imageUrl}}" alt="User" class="friend-suggestion-img">
+		          </a>
 		          <p th:text="${us.firstName} + ' ' + ${us.lastName}"><strong></strong></p>
 		          <p th:text="'(' + ${us.username + ')'}"></p>
 		          <hr>

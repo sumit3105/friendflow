@@ -201,4 +201,25 @@ public class UserController {
         
     	return "index";
     }
+    
+    @GetMapping("/user/{username}")
+    public String viewUserProfile(@PathVariable String username, Model model, HttpSession session) {
+    	User u = UserSessionManager.getLoggedInUser(session);
+    	
+    	if(u.getUsername().equals(username)) {
+    		return "redirect:/user/profile";
+    	}
+    	
+    	User user = userService.getUserByUsername(username);
+    	
+    	if(user == null) {
+    		return "404U";
+    	}
+    	
+    	List<Post> posts = postService.getPostOfUser(username);
+    	model.addAttribute("posts", posts);
+    	model.addAttribute("user", u);
+    	model.addAttribute("other", user);
+    	return "otherUser";
+    }
 }

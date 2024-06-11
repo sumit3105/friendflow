@@ -105,4 +105,8 @@ public class PostService {
 	public List<Post> getPostsOfFriends(User u){
 		return postRepository.findPostsOfFriends(u);
 	}
+	
+	public List<Post> getPostOfUser(String username){
+		return postRepository.findPostOfUser(username);
+	}
 }

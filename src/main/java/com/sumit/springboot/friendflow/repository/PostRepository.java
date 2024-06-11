@@ -14,4 +14,6 @@ public interface PostRepository {
 	public void delete(Post p);
 	
 	public List<Post> findPostsOfFriends(User u);
+	
+	public List<Post> findPostOfUser(String username);
 }

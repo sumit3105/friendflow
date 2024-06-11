@@ -75,7 +75,9 @@
                 <h4 class="w3-center"><strong>All Suggestions</strong></h4>
                 <div th:each="us : ${allUser}" class="w3-center">
 		          <p th:text="${us.firstName} + ' ' + ${us.lastName}"><strong></strong></p>
-		          <img th:src="@{${us.profileImage.imageUrl}}" alt="User" class="friend-suggestion-img">
+		          <a th:href="@{/user/{username}(username=${us.username})}">
+		          	<img th:src="@{${us.profileImage.imageUrl}}" alt="User" class="friend-suggestion-img">
+		          </a>
 		          <p th:text="${us.username}"></p>
 		          <a th:href="@{/friend/create/{username}(username=${us.username})}"><button class="w3-button w3-block w3-theme-d1">Send Request</button></a>
 		          <hr>
