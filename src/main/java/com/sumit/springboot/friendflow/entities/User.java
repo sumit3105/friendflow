@@ -1,5 +1,6 @@
 package com.sumit.springboot.friendflow.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //import org.hibernate.annotations.Fetch;
@@ -65,6 +66,7 @@ public class User {
 		this.profileDetails = profileDetails;
 		this.friendships = friendships;
 		this.profileImage = profileImage;
+		this.friendships = new ArrayList<>();
 	}
 
 	@Override

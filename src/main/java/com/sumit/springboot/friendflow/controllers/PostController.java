@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,5 +73,19 @@ public class PostController {
 			return "403";
 		}
 	}
-
+	
+	@PostMapping("/like/{postId}")
+	public ResponseEntity<Void> likeOrDislikePost(@PathVariable int postId, HttpSession session){
+		User user = UserSessionManager.getLoggedInUser(session);
+		Post post = postService.getPostById(postId);
+		
+		if (post.isLikedByUser(user)) {
+            // If already liked, remove the like
+            postService.unlikePost(post, user);
+        } else {
+            // Otherwise, add a new like
+            postService.likePost(postId, user);
+        }
+		return ResponseEntity.ok().build();
+	}
 }

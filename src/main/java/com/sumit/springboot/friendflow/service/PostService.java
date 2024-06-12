@@ -14,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sumit.springboot.friendflow.entities.Image;
+import com.sumit.springboot.friendflow.entities.Like;
 import com.sumit.springboot.friendflow.entities.Post;
 import com.sumit.springboot.friendflow.entities.User;
 import com.sumit.springboot.friendflow.repository.ImageRepository;
+import com.sumit.springboot.friendflow.repository.LikeRepository;
 import com.sumit.springboot.friendflow.repository.PostRepository;
 import com.sumit.springboot.friendflow.repository.UserRepository;
 import com.sumit.springboot.friendflow.session.UserSessionManager;
@@ -33,6 +35,9 @@ public class PostService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private LikeRepository likeRepository;
 
 	private static String UPLOADED_FOLDER = "src/main/resources/static/img/post/";
 
@@ -108,5 +113,33 @@ public class PostService {
 	
 	public List<Post> getPostOfUser(String username){
 		return postRepository.findPostOfUser(username);
+	}
+	
+	public void likePost(int id, User u) {
+		Post p = postRepository.findById(id);
+		
+		Like like = new Like(p, u);
+		likeRepository.save(like);
+		
+		List<Like> l = p.getLikes();
+		l.add(like);
+		p.setLikes(l);
+
+		postRepository.save(p);
+		
+	}
+	
+	public void unlikePost(Post p, User u) {
+		Like like = p.getLikes().stream()
+                .filter(l -> l.getUser().getUsername().equals(u.getUsername()))
+                .findFirst()
+                .orElse(null);
+		
+		if (like != null) {
+            p.getLikes().remove(like);
+            likeRepository.delete(like);
+            postRepository.save(p);
+        }
+		
 	}
 }

@@ -1,5 +1,6 @@
 package com.sumit.springboot.friendflow.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,17 +41,11 @@ public class Post {
     @JoinColumn(name = "post_id")
     private List<Image> images;
 	
-	@Column(name="likes")
-	private int Likes;
-	
-	@Column(name="dislikes")
-	private int Dislikes;
-	
-	@Column(name="pinned", columnDefinition = "boolean default false")
-	private boolean Pinned;
-	
 	@OneToMany(mappedBy="post")
 	private List<Comment> comments;
+	
+	@OneToMany(mappedBy="post")
+	private List<Like> likes;
 
 	@Override
 	public String toString() {
@@ -59,17 +54,14 @@ public class Post {
 
 	public Post() {}
 
-	
-
 	public Post(String caption, Date postDate, User user, List<Image> images) {
 		super();
 		this.caption = caption;
 		this.postDate = postDate;
 		this.user = user;
 		this.images = images;
-		this.Likes = 0;
-		this.Dislikes = 0;
-		this.Pinned = false;
+		this.likes = new ArrayList<>();
+		this.comments = new ArrayList<>();
 	}
 
 	public int getId() {
@@ -112,36 +104,24 @@ public class Post {
 		this.postDate = postDate;
 	}
 
-	public int getLikes() {
-		return Likes;
-	}
-
-	public void setLikes(int likes) {
-		Likes = likes;
-	}
-
-	public int getDislikes() {
-		return Dislikes;
-	}
-
-	public void setDislikes(int dislikes) {
-		Dislikes = dislikes;
-	}
-
-	public boolean isPinned() {
-		return Pinned;
-	}
-
-	public void setPinned(boolean pinned) {
-		Pinned = pinned;
-	}
-
 	public List<Comment> getComments() {
 		return comments;
 	}
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public List<Like> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<Like> likes) {
+		this.likes = likes;
+	}
+	
+	public boolean isLikedByUser(User user) {
+	    return likes.stream().anyMatch(like -> like.getUser().getUsername().equals(user.getUsername()));
 	}
 	
 }

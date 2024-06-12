@@ -20,8 +20,16 @@ public class Image {
     
     @Column(name="img_url")
     private String imageUrl;
+    
+    public Image() { }
 
-    public Long getId() {
+    public Image(String name, String imageUrl) {
+		super();
+		this.name = name;
+		this.imageUrl = imageUrl;
+	}
+
+	public Long getId() {
         return id;
     }
 
