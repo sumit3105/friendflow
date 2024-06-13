@@ -58,4 +58,8 @@ public class FriendshipService {
 	public List<User> getAllFriends(String username){
 		return friendshipRepo.findAllFriends(username);
 	}
+	
+	public boolean friendshipExist(User user1, User user2) {
+		return friendshipRepo.friendshipExist(user1, user2);
+	}
 }

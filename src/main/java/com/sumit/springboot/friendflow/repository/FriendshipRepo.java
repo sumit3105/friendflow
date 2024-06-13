@@ -16,4 +16,5 @@ public interface FriendshipRepo {
 	
 	public List<User> findAllFriends(String username);
 	
+	public boolean friendshipExist(User user1, User user2);
 }

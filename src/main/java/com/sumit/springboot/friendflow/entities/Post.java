@@ -44,7 +44,7 @@ public class Post {
 	@OneToMany(mappedBy="post")
 	private List<Comment> comments;
 	
-	@OneToMany(mappedBy="post")
+	@OneToMany(mappedBy="post", fetch = FetchType.EAGER)
 	private List<Like> likes;
 
 	@Override

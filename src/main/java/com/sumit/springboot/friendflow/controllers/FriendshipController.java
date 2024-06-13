@@ -32,6 +32,11 @@ public class FriendshipController {
 		User user2 = userService.getUserByUsername(username);
 		
 		if(user1 != null && user2 != null) {
+			
+			if(friendshipService.friendshipExist(user1, user2)) {
+				return "403";
+			}
+			
 			friendshipService.addFriendship(user1,user2);
 			return "redirect:/user/home";
 		}

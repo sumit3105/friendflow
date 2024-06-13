@@ -4,6 +4,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
     <script>
+    	// Password button toggler
     	let btn = document.getElementById("button");
     	let icon = document.getElementById("pwd");
     	let password = document.getElementById("password");
@@ -18,6 +19,23 @@
     			icon.className = "fa fa-eye-slash";
     		}
     	});
+    	
+    	// Preview images before uploading
+        document.getElementById('profileImage').addEventListener('change', function(event) {
+            var imagePreview = document.getElementById('imagePreview');
+            imagePreview.innerHTML = '';
+            var file = event.target.files[0];
+            if (file) {
+            	var reader = new FileReader();
+                reader.onload = function(e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    imagePreview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    	
     	
     </script>
     

@@ -9,6 +9,7 @@ import com.sumit.springboot.friendflow.entities.User;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 @Repository
@@ -61,5 +62,19 @@ public class FriendshipRepoImp implements FriendshipRepo {
 
 		return ty.getResultList();
 
+	}
+
+	@Override
+	public boolean friendshipExist(User user1, User user2) {
+		String jpql = "SELECT COUNT(f) FROM Friendship f " +
+                "WHERE (f.user1.username = :user1 AND f.user2.username = :user2) " +
+                "OR (f.user1.username = :user2 AND f.user2.username = :user1)";
+		
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("user1", user1.getUsername());
+		query.setParameter("user2", user2.getUsername());
+		
+		Long count = (Long) query.getSingleResult();
+		return count > 0;
 	}
 }

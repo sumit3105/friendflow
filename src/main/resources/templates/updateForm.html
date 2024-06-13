@@ -21,6 +21,19 @@
             max-width: 600px;
             width: 100%;
         }
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 20px;
+        }
     </style>
 </head>
 <body class="w3-theme-l5">
@@ -31,7 +44,7 @@
 <div class="w3-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a href="#" th:href="@{/user/home}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Logo</a>
+  <a href="#" th:href="@{/user/home}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a>
   <a href="#" th:href="@{/post/create}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Add Post"><i class="fa fa-plus"></i></a>
   <a href="#" th:href="@{/friend/view/{username}(username=${user.username})}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="View Friends"><i class="fa fa-user"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
@@ -74,8 +87,9 @@
                     <form action="/" th:action="@{/user/save}" method="post" enctype="multipart/form-data">
                         <div class="w3-container">
                             <label for="profileImage">Profile Image</label>
-                            <input type="file" name="profileImage" class="w3-input w3-border w3-margin-bottom">
+                            <input type="file" id="profileImage" name="profileImage" class="w3-input w3-border w3-margin-bottom">
                         </div>
+                        <div class="w3-container image-preview" id="imagePreview"></div>
                         <div class="w3-container">
                             <label for="firstName">Username</label>
                             <input type="text" name="username" th:value="${user.username}" class="w3-input w3-border w3-margin-bottom" readonly>
@@ -119,27 +133,43 @@
 
 <script>
 // Accordion
-function myFunction(id) {
-    var x = document.getElementById(id);
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-        x.previousElementSibling.className += " w3-theme-d1";
-    } else { 
-        x.className = x.className.replace("w3-show", "");
-        x.previousElementSibling.className = 
-        x.previousElementSibling.className.replace(" w3-theme-d1", "");
-    }
-}
-
-// Used to toggle the menu on smaller screens when clicking on the menu button
-function openNav() {
-    var x = document.getElementById("navDemo");
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-    } else { 
-        x.className = x.className.replace(" w3-show", "");
-    }
-}
+		function myFunction(id) {
+		    var x = document.getElementById(id);
+		    if (x.className.indexOf("w3-show") == -1) {
+		        x.className += " w3-show";
+		        x.previousElementSibling.className += " w3-theme-d1";
+		    } else { 
+		        x.className = x.className.replace("w3-show", "");
+		        x.previousElementSibling.className = 
+		        x.previousElementSibling.className.replace(" w3-theme-d1", "");
+		    }
+		}
+		
+		// Used to toggle the menu on smaller screens when clicking on the menu button
+		function openNav() {
+		    var x = document.getElementById("navDemo");
+		    if (x.className.indexOf("w3-show") == -1) {
+		        x.className += " w3-show";
+		    } else { 
+		        x.className = x.className.replace(" w3-show", "");
+		    }
+		}
+		
+		// Preview images before uploading
+        document.getElementById('profileImage').addEventListener('change', function(event) {
+            var imagePreview = document.getElementById('imagePreview');
+            imagePreview.innerHTML = '';
+            var file = event.target.files[0];
+            if (file) {
+            	var reader = new FileReader();
+                reader.onload = function(e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    imagePreview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
 </script>
 
 </body>
