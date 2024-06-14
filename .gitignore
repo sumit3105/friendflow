@@ -3,8 +3,11 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-**/src/main/resources/static/img/
-**/src/main/resources/friendflow.sql
+
+src/main/resources/friendflow.sql
+
+src/main/resources/static/img/
+
 ### STS ###
 .apt_generated
 .classpath
