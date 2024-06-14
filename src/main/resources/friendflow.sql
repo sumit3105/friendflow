@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2024 at 12:37 PM
+-- Generation Time: Jun 14, 2024 at 03:28 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -67,8 +67,16 @@ CREATE TABLE `friendships` (
 --
 
 INSERT INTO `friendships` (`friendship_date`, `friendship_id`, `user1_username`, `user2_username`, `status`) VALUES
-('2024-06-05 15:07:22.000000', 1, 'sumit31', 'aman22dec', b'0'),
-('2024-06-05 16:01:33.000000', 2, 'darshit1234', 'sodamasala', b'0');
+('2024-06-05 15:07:22.000000', 1, 'sumit31', 'aman22dec', b'1'),
+('2024-06-05 16:01:33.000000', 2, 'darshit1234', 'sodamasala', b'1'),
+('2024-06-06 14:56:04.000000', 3, 'darshit1234', 'sujal31', b'1'),
+('2024-06-07 15:46:05.000000', 4, 'aman22dec', '_devxoxo_', b'1'),
+('2024-06-10 14:01:12.000000', 7, 'darshit1234', 'sumit31', b'1'),
+('2024-06-10 14:43:56.000000', 8, 'sumit31', 'sujal31', b'1'),
+('2024-06-11 11:14:53.000000', 9, 'aman22dec', 'darshit1234', b'1'),
+('2024-06-12 14:47:10.000000', 10, 'sodamasala', 'aman22dec', b'1'),
+('2024-06-13 15:15:01.000000', 11, 'def46917', 'aman22dec', b'1'),
+('2024-06-14 18:49:43.000000', 12, 'def46917', 'darshit1234', b'1');
 
 -- --------------------------------------------------------
 
@@ -103,13 +111,48 @@ INSERT INTO `images` (`post_id`, `img_id`, `img_name`, `img_url`) VALUES
 (NULL, 19, 'IMG_20200114_181101.jpg', '/img/uploads/IMG_20200114_181101.jpg'),
 (NULL, 20, 'IMG_20200114_181101.jpg', '/img/uploads/IMG_20200114_181101.jpg'),
 (NULL, 26, 'IMG-20220601-WA0000.jpg', '/img/uploads/IMG-20220601-WA0000.jpg'),
-(10, 29, 'IMG20230115153854.jpg', '/img/post/IMG20230115153854.jpg'),
 (NULL, 30, 'IMG20220630091223.jpg', '/img/uploads/IMG20220630091223.jpg'),
-(15, 35, 'IMG20230115153854.jpg', '/img/post/IMG20230115153854.jpg'),
 (NULL, 36, '1000001181.jpg', '/img/uploads/1000001181.jpg'),
 (NULL, 37, 'IMG20221005172141.jpg', '/img/uploads/IMG20221005172141.jpg'),
 (NULL, 38, 'IMG20230116145204.jpg', '/img/uploads/IMG20230116145204.jpg'),
-(16, 39, '-6177005855141113938_121.jpg', '/img/post/-6177005855141113938_121.jpg');
+(16, 39, '-6177005855141113938_121.jpg', '/img/post/-6177005855141113938_121.jpg'),
+(17, 40, '20221224_163312.jpg', '/img/post/20221224_163312.jpg'),
+(22, 45, 'IMG20220806124918.jpg', '/img/post/IMG20220806124918.jpg'),
+(23, 46, 'IMG20220528103318.jpg', '/img/post/IMG20220528103318.jpg'),
+(NULL, 47, 'IMG-20220517-WA0000.jpg', '/img/uploads/IMG-20220517-WA0000.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `likes`
+--
+
+CREATE TABLE `likes` (
+  `like_id` int(11) NOT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `likes`
+--
+
+INSERT INTO `likes` (`like_id`, `post_id`, `username`) VALUES
+(1, 22, 'sumit31'),
+(4, 22, 'darshit1234'),
+(5, 6, 'darshit1234'),
+(6, 5, 'darshit1234'),
+(8, 17, 'aman22dec'),
+(9, 16, 'aman22dec'),
+(10, 5, 'aman22dec'),
+(11, 17, 'sujal31'),
+(13, 5, 'sujal31'),
+(14, 5, 'sumit31'),
+(16, 23, 'aman22dec'),
+(17, 6, 'def46917'),
+(18, 6, 'aman22dec'),
+(19, 23, 'darshit1234'),
+(20, 16, 'darshit1234');
 
 -- --------------------------------------------------------
 
@@ -118,9 +161,6 @@ INSERT INTO `images` (`post_id`, `img_id`, `img_name`, `img_url`) VALUES
 --
 
 CREATE TABLE `posts` (
-  `dislikes` int(11) DEFAULT NULL,
-  `likes` int(11) DEFAULT NULL,
-  `pinned` tinyint(1) DEFAULT 0,
   `post_id` int(11) NOT NULL,
   `post_date` datetime(6) DEFAULT NULL,
   `caption` varchar(255) DEFAULT NULL,
@@ -131,12 +171,13 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`dislikes`, `likes`, `pinned`, `post_id`, `post_date`, `caption`, `user_id`) VALUES
-(0, 0, 0, 5, '2024-05-28 15:01:52.000000', 'School Farewell... ❤️❤️❤️\r\nMeeting friends one last time 🤗🤗', 'sumit31'),
-(0, 0, 0, 6, '2024-05-28 15:29:34.000000', 'School Farewell... ❤️❤️❤️\r\nMeeting friends one last time 🤗🤗', 'aman22dec'),
-(0, 0, 0, 10, '2024-06-01 15:06:10.000000', 'no caption needed..........', 'sujal31'),
-(0, 0, 0, 15, '2024-06-03 10:50:14.000000', 'nothing.......', 'sujal31'),
-(0, 0, 0, 16, '2024-06-05 14:17:09.000000', 'Farewell......', 'sodamasala');
+INSERT INTO `posts` (`post_id`, `post_date`, `caption`, `user_id`) VALUES
+(5, '2024-05-28 15:01:52.000000', 'School Farewell... ❤️❤️❤️\r\nMeeting friends one last time 🤗🤗', 'sumit31'),
+(6, '2024-05-28 15:29:34.000000', 'School Farewell... ❤️❤️❤️\r\nMeeting friends one last time 🤗🤗', 'aman22dec'),
+(16, '2024-06-05 14:17:09.000000', 'Farewell......', 'sodamasala'),
+(17, '2024-06-10 14:40:35.000000', 'Freshers\'2k22', 'darshit1234'),
+(22, '2024-06-11 10:38:31.000000', 'Achievements in School 🧑‍🎓🧑‍🎓', 'sujal31'),
+(23, '2024-06-13 14:40:44.000000', 'School Holding...', 'sumit31');
 
 -- --------------------------------------------------------
 
@@ -158,8 +199,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`profile_img`, `fname`, `lname`, `password`, `profile_details`, `username`) VALUES
-(20, 'Aman', 'Deshani', '12345678', 'Movie Lover 💻❤️❤️\r\nKing 👑👑', 'aman22dec'),
-(36, 'Darshit', 'Talsaniya', '12345678', 'No bio needed...', 'darshit1234'),
+(20, 'Aman', 'Deshani', '12345678', 'Movie Lover 💻❤️❤️', 'aman22dec'),
+(36, 'Darshit', 'Talsaniya', '12345678', 'It is my profile...', 'darshit1234'),
+(47, 'Abc', 'Def', 'sujal3105', 'No Bio...', 'def46917'),
 (38, 'Dev', 'Shah', '12345678', 'What is Bio ????', 'sodamasala'),
 (26, 'Sujal', 'Gohil', 'sumit3105', 'No Bio Needed 😃😃', 'sujal31'),
 (30, 'Sumit', 'Gohil', 'sujal3105', 'Cricket Lover - 🏏🏏\r\nDDU - CE\'2026\r\nIndian ❤️', 'sumit31'),
@@ -200,6 +242,14 @@ ALTER TABLE `images`
   ADD KEY `FKcp0pycisii8ub3q4b7x5mfpn1` (`post_id`);
 
 --
+-- Indexes for table `likes`
+--
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`like_id`),
+  ADD KEY `FKry8tnr4x2vwemv2bb0h5hyl0x` (`post_id`),
+  ADD KEY `FK5tgmgqmu12rs6t9gv4i1laia3` (`username`);
+
+--
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
@@ -233,19 +283,25 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `friendships`
 --
 ALTER TABLE `friendships`
-  MODIFY `friendship_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `friendship_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `img_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `img_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+
+--
+-- AUTO_INCREMENT for table `likes`
+--
+ALTER TABLE `likes`
+  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
@@ -276,6 +332,13 @@ ALTER TABLE `friendships`
 --
 ALTER TABLE `images`
   ADD CONSTRAINT `FKcp0pycisii8ub3q4b7x5mfpn1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
+
+--
+-- Constraints for table `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `FK5tgmgqmu12rs6t9gv4i1laia3` FOREIGN KEY (`username`) REFERENCES `users` (`username`),
+  ADD CONSTRAINT `FKry8tnr4x2vwemv2bb0h5hyl0x` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
 
 --
 -- Constraints for table `posts`
