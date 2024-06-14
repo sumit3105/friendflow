@@ -1,0 +1,81 @@
+<!-- Footer -->
+<footer class="w3-bottom w3-container w3-theme-d5">
+	<div class="w3-container w3-center">
+		<p class="w3-wide">Developed by <a href="http://www.infoaboutme.epizy.com/" target="_blank">Sumit Gohil</a></p>
+	</div>
+</footer>
+ <script type="text/javascript" th:src="@{/js/script.js}"></script>
+<script>
+//js for like fuctionality
+$(document).ready(function() {
+    $('.like-button').click(function() {
+        var postId = $(this).data('postid');
+        var likeButton = $(this);
+        var likeCountSpan = likeButton.find('.like-count');
+
+        $.ajax({
+            type: 'POST',
+            url: '/post/like/' + postId,
+            success: function() {
+                var currentLikes = parseInt(likeCountSpan.text());
+                var isLiked = likeButton.hasClass('liked');
+                
+                if (isLiked) {
+                    likeCountSpan.text(currentLikes - 1);
+                    likeButton.removeClass('liked');
+                    likeButton.html('<i class="fa fa-thumbs-up"></i>  Like <span class="like-count">' + (currentLikes - 1) + '</span>');
+                } else {
+                    likeCountSpan.text(currentLikes + 1);
+                    likeButton.addClass('liked');
+                    likeButton.html('<i class="fa fa-thumbs-up"></i>  Liked <span class="like-count">' + (currentLikes + 1) + '</span>');
+                }
+            },
+            error: function() {
+                alert('Error liking the post.');
+            }
+        });
+    });
+});
+
+// Accordion
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.previousElementSibling.className += " w3-theme-d1";
+  } else { 
+    x.className = x.className.replace("w3-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace(" w3-theme-d1", "");
+  }
+}
+
+// Used to toggle the menu on smaller screens when clicking on the menu button
+function openNav() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+//Preview images before uploading
+document.getElementById('profileImage').addEventListener('change', function(event) {
+    var imagePreview = document.getElementById('imagePreview');
+    imagePreview.innerHTML = '';
+    var file = event.target.files[0];
+    if (file) {
+    	var reader = new FileReader();
+        reader.onload = function(e) {
+            var img = document.createElement('img');
+            img.src = e.target.result;
+            imagePreview.appendChild(img);
+        }
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+
+</body>
+</html> 

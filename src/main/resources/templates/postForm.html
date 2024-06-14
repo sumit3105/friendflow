@@ -1,75 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Profile Update</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
-    <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Open+Sans'>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
-        .center-form {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .form-container {
-            max-width: 600px;
-            width: 100%;
-        }
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .image-preview img {
-            max-width: 200px;
-            max-height: 200px;
-            object-fit: cover;
-            border: 1px solid #ddd;
-            padding: 5px;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body class="w3-theme-l5">
-    <div id="loadingSpinner">
-        <div class="spinner"></div>
-    </div>
-    <!-- Navbar -->
-    <div class="w3-top">
-        <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
-            <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-            <a href="#" th:href="@{/user/home}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a>
-            <a href="#" th:href="@{/post/create}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Add Post"><i class="fa fa-plus"></i></a>
-            <a href="#" th:href="@{/friend/view/{username}(username=${user.username})}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="View Friends"><i class="fa fa-user"></i></a>
-            <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
-            <div class="w3-dropdown-hover w3-hide-small">
-                <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>
-                <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-                    <a href="#" class="w3-bar-item w3-button">One new friend request</a>
-                    <a href="#" class="w3-bar-item w3-button">John Doe posted on your wall</a>
-                    <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
-                </div>
-            </div>
-            <a th:href="@{/user/profile}" href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
-                <img th:src="@{${user.profileImage.imageUrl}}" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
-            </a>
-            <a href="#" th:href="@{/logout}" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Logout"><i class="fa fa-sign-out"></i> Logout</a>
-        </div>
-    </div>
-
-    <!-- Navbar on small screens -->
-    <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
-        <a href="#" th:href="@{/user/home}" class="w3-bar-item w3-button w3-padding-large">Home</a>
-        <a href="#" th:href="@{/post/create}" class="w3-bar-item w3-button w3-padding-large">Add Post</a>
-        <a href="#" th:href="@{/user/profile}" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
-        <a href="#" th:href="@{/logout}" class="w3-bar-item w3-button w3-padding-large">Logout</a>
-    </div>
+<head th:replace="header2.html"></head>
 
     <!-- Page Container -->
     <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
@@ -110,55 +39,57 @@
     </div>
     <br>
 
-    <!-- Footer -->
-    <footer class="w3-bottom w3-container w3-theme-d5">
-        <div class="w3-container w3-center">
-            <p class="w3-wide">Developed by <a href="http://www.infoaboutme.epizy.com/" target="_blank">Sumit Gohil</a></p>
-        </div>
-    </footer>
-    <script type="text/javascript" th:src="@{/js/script.js}"></script>
-    <script>
-        // Accordion
-        function myFunction(id) {
-            var x = document.getElementById(id);
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-                x.previousElementSibling.className += " w3-theme-d1";
-            } else { 
-                x.className = x.className.replace("w3-show", "");
-                x.previousElementSibling.className = 
-                x.previousElementSibling.className.replace(" w3-theme-d1", "");
-            }
-        }
+<!-- Footer -->
+<footer class="w3-bottom w3-container w3-theme-d5">
+	<div class="w3-container w3-center">
+		<p class="w3-wide">Developed by <a href="http://www.infoaboutme.epizy.com/" target="_blank">Sumit Gohil</a></p>
+	</div>
+</footer>
+ <script type="text/javascript" th:src="@{/js/script.js}"></script>
+<script>
 
-        // Used to toggle the menu on smaller screens when clicking on the menu button
-        function openNav() {
-            var x = document.getElementById("navDemo");
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-            } else { 
-                x.className = x.className.replace(" w3-show", "");
-            }
-        }
+// Accordion
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.previousElementSibling.className += " w3-theme-d1";
+  } else { 
+    x.className = x.className.replace("w3-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace(" w3-theme-d1", "");
+  }
+}
 
-        // Preview images before uploading
-        document.getElementById('images').addEventListener('change', function(event) {
-            var imagePreview = document.getElementById('imagePreview');
-            imagePreview.innerHTML = '';
-            var files = event.target.files;
-            if (files) {
-                for (var i = 0; i < files.length; i++) {
-                    var file = files[i];
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        var img = document.createElement('img');
-                        img.src = e.target.result;
-                        imagePreview.appendChild(img);
-                    }
-                    reader.readAsDataURL(file);
-                }
+// Used to toggle the menu on smaller screens when clicking on the menu button
+function openNav() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+//Preview images before uploading
+document.getElementById('images').addEventListener('change', function(event) {
+    var imagePreview = document.getElementById('imagePreview');
+    imagePreview.innerHTML = '';
+    var files = event.target.files;
+    if (files) {
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                imagePreview.appendChild(img);
             }
-        });
-    </script>
+            reader.readAsDataURL(file);
+        }
+    }
+});
+</script>
+
 </body>
-</html>
+</html> 
