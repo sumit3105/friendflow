@@ -44,9 +44,8 @@ public class Comment{
 	
 	public Comment() {}
 	
-	public Comment(int commentId, Post post, User user, String comment, Date date, boolean edited) {
+	public Comment(Post post, User user, String comment, Date date, boolean edited) {
 		super();
-		this.commentId = commentId;
 		this.post = post;
 		this.user = user;
 		this.comment = comment;

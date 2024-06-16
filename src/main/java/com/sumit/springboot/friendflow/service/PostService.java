@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sumit.springboot.friendflow.entities.Comment;
 import com.sumit.springboot.friendflow.entities.Image;
 import com.sumit.springboot.friendflow.entities.Like;
 import com.sumit.springboot.friendflow.entities.Post;
 import com.sumit.springboot.friendflow.entities.User;
+import com.sumit.springboot.friendflow.repository.CommentRepo;
 import com.sumit.springboot.friendflow.repository.ImageRepository;
 import com.sumit.springboot.friendflow.repository.LikeRepository;
 import com.sumit.springboot.friendflow.repository.PostRepository;
@@ -38,6 +41,9 @@ public class PostService {
 	
 	@Autowired
 	private LikeRepository likeRepository;
+	
+	@Autowired
+	private CommentRepo commentRepo;
 
 	private static String UPLOADED_FOLDER = "src/main/resources/static/img/post/";
 
@@ -141,5 +147,19 @@ public class PostService {
             postRepository.save(p);
         }
 		
+	}
+	
+	public void addComment(int postId, String comment, User u) {
+		
+		Post post = postRepository.findById(postId);
+		
+		Comment newComment = new Comment(post,u,comment,new Date(),false);
+		commentRepo.save(newComment);
+		
+		List<Comment> c = post.getComments();
+		c.add(newComment);
+		post.setComments(c);
+		
+		postRepository.save(post);	
 	}
 }

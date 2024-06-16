@@ -88,4 +88,11 @@ public class PostController {
         }
 		return ResponseEntity.ok().build();
 	}
+	
+	@PostMapping("/comment/{postId}")
+	public String addCommentOnPost(@PathVariable int postId, @RequestParam("comment") String caption, HttpSession session){
+		User u = UserSessionManager.getLoggedInUser(session);
+		postService.addComment(postId, caption, u);
+		return "redirect:/user/home";
+	}
 }

@@ -47,12 +47,39 @@
      }
 	
 	.friend-suggestion-img {
-	  width: 70px; /* Set the desired width */
-	  height: 70px; /* Set the desired height */
-	  object-fit: cover; /* Ensure the image maintains its aspect ratio and covers the entire area */
-	  border-radius: 50%; /* Make the images circular */
+	  width: 70px; 
+	  height: 70px; 
+	  object-fit: cover; 
+	  border-radius: 50%; 
+	}
+	
+	.w3-modal-content {
+	    display: flex;
+	    flex-direction: column;
+	    max-height: 60vh; 
+	    width: 80%;
+	    overflow: hidden;
+	}
+	
+	.modal-header {
+	    flex-shrink: 0;
+	}
+	
+	.modal-content {
+	    flex-grow: 1;
+	    overflow-y: auto;
+	}
+	
+	.modal-footer {
+	    flex-shrink: 0;
+	}
+	
+	.w3-modal-content {
+	    max-width: 600px;
+	    margin: auto;
 	}
 
+	
 </style>
 </head>
 <body class="w3-theme-l5">
@@ -63,18 +90,10 @@
 <div class="w3-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a href="#" th:href="@{/user/home}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a>
+  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">FriendFlow</a>
+  <a href="#" th:href="@{/user/home}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Home"><i class="fa fa-home w3-margin-right"></i></a>
   <a href="#" th:href="@{/post/create}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Add Post"><i class="fa fa-plus"></i></a>
   <a href="#" th:href="@{/friend/view/{username}(username=${user.username})}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="View Friends"><i class="fa fa-user"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
-  <div class="w3-dropdown-hover w3-hide-small">
-    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>     
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-      <a href="#" class="w3-bar-item w3-button">One new friend request</a>
-      <a href="#" class="w3-bar-item w3-button">John Doe posted on your wall</a>
-      <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
-    </div>
-  </div>
   <a th:href="@{/user/profile}" href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
     <img th:src="@{${user.profileImage.imageUrl}}" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
   </a>

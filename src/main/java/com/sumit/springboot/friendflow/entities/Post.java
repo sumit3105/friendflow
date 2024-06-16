@@ -41,7 +41,7 @@ public class Post {
     @JoinColumn(name = "post_id")
     private List<Image> images;
 	
-	@OneToMany(mappedBy="post")
+	@OneToMany(mappedBy="post", fetch = FetchType.EAGER)
 	private List<Comment> comments;
 	
 	@OneToMany(mappedBy="post", fetch = FetchType.EAGER)

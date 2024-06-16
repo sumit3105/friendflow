@@ -43,12 +43,6 @@ public class User {
 	@JoinColumn(name = "profile_img") 
 	private Image profileImage;
 	
-	
-//	@Fetch(FetchMode.JOIN)
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="username")
-	private List<Authority> authorities;
-	
 	@OneToMany(mappedBy = "user1")
     private List<Friendship> friendships;
 	
@@ -88,14 +82,6 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public List<Authority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(List<Authority> authorities) {
-		this.authorities = authorities;
 	}
 
 	public String getFirstName() {

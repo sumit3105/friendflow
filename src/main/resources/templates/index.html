@@ -63,32 +63,70 @@
 		        	<p>Seems like you don't have friends 🧐 or your friends do not have any posts yet. Make friends to view their posts...</p>
 		    	</div>
 		    	<div th:if="${posts != null and !posts.isEmpty()}">
-		    		<div th:each="post : ${posts}">
+		    		<div th:each="post, status : ${posts}">
 				      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-				      	<a th:href="@{/user/{username}(username=${post.user.username})}">
-				        	<img th:src="@{${post.user.profileImage.imageUrl}}" alt="Profile" class="w3-left w3-circle w3-margin-right" style="width:50px;height:45px;">
-				       	</a>
-				        <span class="w3-right w3-opacity" th:text="${#dates.format(post.postDate, 'MMM dd, yyyy HH:mm')}"></span>
-				        <h4 th:text="${post.user.firstName} + ' ' + ${post.user.lastName}"></h4><br>
-				        <hr class="w3-clear">
-				        <p th:text="${post.caption}"></p>
-				         <div class="w3-row-padding" style="margin:0 -16px" th:if="${post.images != null}">
-						      <div class="w3-half" th:each="image : ${post.images}">
-						        <img th:src="${image.imageUrl}" style="width:100%;height:250px" alt="Image" class="w3-margin-bottom">
-						      </div>
-						 </div>
-						 
-						 <!-- Like button -->
-				        <button type="button" th:data-postid="${post.id}" class="w3-button w3-theme-d1 w3-margin-bottom like-button" th:classappend="${post.isLikedByUser(user)} ? 'liked' : ''">
-						    <div th:if="${post.isLikedByUser(user)}">
-						        <i class="fa fa-thumbs-up"></i>  Liked <span class="like-count" th:text="${post.likes.size()}"></span> 
-						    </div>
-						    <div th:unless="${post.isLikedByUser(user)}">
-						        <i class="fa fa-thumbs-up"></i>  Like <span class="like-count" th:text="${post.likes.size()}"></span> 
-						    </div>
-						</button>
-	
-				        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
+					      	<a th:href="@{/user/{username}(username=${post.user.username})}">
+					        	<img th:src="@{${post.user.profileImage.imageUrl}}" alt="Profile" class="w3-left w3-circle w3-margin-right" style="width:50px;height:45px;">
+					       	</a>
+					        <span class="w3-right w3-opacity" th:text="${#dates.format(post.postDate, 'MMM dd, yyyy HH:mm')}"></span>
+					        <h4 th:text="${post.user.firstName} + ' ' + ${post.user.lastName}"></h4><br>
+					        <hr class="w3-clear">
+					        <p th:text="${post.caption}"></p>
+					         <div class="w3-row-padding" style="margin:0 -16px" th:if="${post.images != null}">
+							      <div class="w3-half" th:each="image : ${post.images}">
+							        <img th:src="${image.imageUrl}" style="width:100%;height:250px" alt="Image" class="w3-margin-bottom">
+							      </div>
+							 </div>
+							 
+							 <!-- Like button -->
+					        <button type="button" th:data-postid="${post.id}" class="w3-button w3-theme-d1 w3-margin-bottom like-button" th:classappend="${post.isLikedByUser(user)} ? 'liked' : ''">
+							    <div th:if="${post.isLikedByUser(user)}">
+							        <i class="fa fa-thumbs-up"></i>  Liked <span class="like-count" th:text="'(' + ${post.likes.size() + ')'}"></span> 
+							    </div>
+							    <div th:unless="${post.isLikedByUser(user)}">
+							        <i class="fa fa-thumbs-up"></i>  Like <span class="like-count" th:text="'(' + ${post.likes.size() + ')'}"></span> 
+							    </div>
+							</button>
+								
+							<!-- Comment button -->
+					        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom" th:onclick="'document.getElementById(\'comment' + ${status.index} + '\').style.display=\'block\''">
+					        	<i class="fa fa-comment"></i>  Comment <span class="comment-count" th:text="'(' + ${post.comments.size() + ')'}"></span>
+					        </button> 
+					        	<!-- Modal for comment panel -->
+					        	<div th:id="|comment${status.index}|" class="w3-modal">
+								    <div class="w3-modal-content w3-animate-bottom w3-card-4 modal-flex-container">
+								        <header class="modal-header w3-container w3-teal"> 
+								            <span th:onclick="'document.getElementById(\'comment' + ${status.index} + '\').style.display=\'none\''" class="w3-button w3-display-topright">&times;</span>
+								            <h2>Comments</h2>
+								        </header>
+								        <div class="w3-container comments-container modal-content">
+								            <div th:if="${post.comments == null or post.comments.isEmpty()}">
+								                <p class="w3-center w3-opacity">No Comments Yet. Be first to comment</p>
+								            </div>
+								            <div th:unless="${post.comments == null or post.comments.isEmpty()}">
+								                <div th:each="comment : ${post.comments}">
+								                    <div class="w3-container">
+								                        <p><strong th:text="${comment.user.username}"></strong></p>
+								                        <p th:text="${comment.comment}"></p>
+								                    </div>
+								                    <hr>
+								                </div>
+								            </div>
+								        </div>
+								        <footer class="modal-footer w3-container w3-teal">
+								            <form name="comment-form" class="comment-form" onsubmit="return checkInput()" th:action="@{/post/comment/{postId}(postId=${post.id})}" method="post">
+								                <div class="w3-container">
+								                    <div class="w3-col m10">
+								                        <input type="text" class="w3-input w3-border w3-margin-top w3-margin-bottom" id="commentIP" name="comment" placeholder="Write Comment Here...">
+								                    </div>
+								                    <div class="w3-col m2">
+								                        <input type="submit" id="commentBtn" class="w3-button w3-theme w3-round w3-margin-top w3-margin-left w3-margin-bottom" value="Comment">
+								                    </div>
+								                </div>
+								            </form>
+								        </footer>
+								    </div>
+								</div>
 				        </div>
 				      </div>
 				 </div>

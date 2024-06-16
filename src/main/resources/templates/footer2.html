@@ -75,6 +75,19 @@ document.getElementById('profileImage').addEventListener('change', function(even
         reader.readAsDataURL(file);
     }
 });
+
+//Check comment whether it is empty or not
+function checkInput(){
+	var ip = document.forms["comment-form"]["comment"].value;
+	
+	if(ip == ""){
+		alert("Empty comment can't submitted");
+		return false;
+	}
+	
+}
+
+
 </script>
 
 </body>
