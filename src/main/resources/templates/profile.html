@@ -80,10 +80,7 @@
 					<div class="w3-right">
 						<span class="w3-opacity"
 							th:text="${#dates.format(post.postDate, 'MMM dd, yyyy HH:mm')}"></span>
-						<a href="#" th:href="@{/post/edit/{id}(id=${post.id})}" id="edit"
-							title="Edit Post" class="w3-margin-left"><i
-							class="fa fa-pencil"></i></a> <a href="#"
-							th:href="@{/post/delete/{id}(id=${post.id})}" id="delete"
+						<a href="#" th:href="@{/post/delete/{id}(id=${post.id})}" id="delete"
 							title="Delete Post" class="w3-margin-left"
 							onclick="if (!(confirm('Are you sure you want to delete this post ?'))) return false"><i
 							class="fa fa-trash-o"></i></a>
@@ -139,11 +136,21 @@
 								<div
 									th:unless="${post.comments == null or post.comments.isEmpty()}">
 									<div th:each="comment : ${post.comments}">
-										<div class="w3-container">
-											<p>
-												<strong th:text="${comment.user.username}"></strong>
-											</p>
-											<p th:text="${comment.comment}"></p>
+										<div th:if="${comment.user.username == user.username}">
+											<div class="w3-container">
+												<p>
+													<strong th:text="${comment.user.username + ' (You)'}"></strong>
+												</p>
+												<p th:text="${comment.comment}"></p>
+											</div>
+										</div>
+										<div th:unless="${comment.user.username == user.username}">
+											<div class="w3-container">
+												<p>
+													<strong th:text="${comment.user.username}"></strong>
+												</p>
+												<p th:text="${comment.comment}"></p>
+											</div>
 										</div>
 										<hr>
 									</div>

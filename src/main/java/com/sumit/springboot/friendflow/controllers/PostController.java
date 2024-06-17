@@ -19,6 +19,7 @@ import com.sumit.springboot.friendflow.entities.User;
 import com.sumit.springboot.friendflow.service.PostService;
 import com.sumit.springboot.friendflow.session.UserSessionManager;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
@@ -90,9 +91,10 @@ public class PostController {
 	}
 	
 	@PostMapping("/comment/{postId}")
-	public String addCommentOnPost(@PathVariable int postId, @RequestParam("comment") String caption, HttpSession session){
+	public String addCommentOnPost(@PathVariable int postId, @RequestParam("comment") String caption, HttpSession session, HttpServletRequest request){
 		User u = UserSessionManager.getLoggedInUser(session);
 		postService.addComment(postId, caption, u);
-		return "redirect:/user/home";
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
 	}
 }

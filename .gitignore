@@ -7,6 +7,7 @@ target/
 src/main/resources/friendflow.sql
 
 src/main/resources/static/img/
+.env
 
 ### STS ###
 .apt_generated

@@ -90,17 +90,10 @@ public class PostService {
 			List<Image> images = p.getImages();
 			if (images != null && !images.isEmpty()) {
 				for (Image image : images) {
-					try {
-						Files.deleteIfExists(Paths.get(UPLOADED_FOLDER + image.getName()));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 					imageRepository.delete(image);
 				}				
-			}
-			
-			System.out.println(p.getImages().removeAll(images));
-			postRepository.delete(p);			
+			}			
+						
 			
 			List<Post> pt = user.getPosts();
 			
@@ -109,6 +102,7 @@ public class PostService {
 			System.out.println(user.getPosts());
 			user.setPosts(pt);
 			userRepository.save(user);
+			postRepository.delete(p);
 			UserSessionManager.setUserLoggedIn(session, user);
 		}
 	}

@@ -105,9 +105,17 @@
 								            </div>
 								            <div th:unless="${post.comments == null or post.comments.isEmpty()}">
 								                <div th:each="comment : ${post.comments}">
-								                    <div class="w3-container">
-								                        <p><strong th:text="${comment.user.username}"></strong></p>
-								                        <p th:text="${comment.comment}"></p>
+								                	<div th:if="${comment.user.username == user.username}">
+									                    <div class="w3-container">
+									                        <p><strong th:text="${comment.user.username + ' (You)'}"></strong></p>
+									                        <p th:text="${comment.comment}"></p>
+									                    </div>
+								                    </div>
+								                    <div th:unless="${comment.user.username == user.username}">
+									                    <div class="w3-container">
+									                        <p><strong th:text="${comment.user.username}"></strong></p>
+									                        <p th:text="${comment.comment}"></p>
+									                    </div>
 								                    </div>
 								                    <hr>
 								                </div>
