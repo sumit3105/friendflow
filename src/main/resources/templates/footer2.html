@@ -16,18 +16,18 @@ $(document).ready(function() {
         $.ajax({
             type: 'POST',
             url: '/post/like/' + postId,
-            success: function() {
-                var currentLikes = parseInt(likeCountSpan.text());
-                var isLiked = likeButton.hasClass('liked');
+            success: function(response) {
+                var newLikeCount = response.likeCount;
+                var isLiked = response.isLiked;
+                
+                likeCountSpan.text('(' + newLikeCount + ')');
                 
                 if (isLiked) {
-                    likeCountSpan.text(currentLikes - 1);
-                    likeButton.removeClass('liked');
-                    likeButton.html('<i class="fa fa-thumbs-up"></i>  Like <span class="like-count">' + (currentLikes - 1) + '</span>');
-                } else {
-                    likeCountSpan.text(currentLikes + 1);
                     likeButton.addClass('liked');
-                    likeButton.html('<i class="fa fa-thumbs-up"></i>  Liked <span class="like-count">' + (currentLikes + 1) + '</span>');
+                    likeButton.html('<i class="fa fa-thumbs-up"></i>  Liked <span class="like-count">(' + newLikeCount + ')</span>');
+                } else {
+                    likeButton.removeClass('liked');
+                    likeButton.html('<i class="fa fa-thumbs-up"></i>  Like <span class="like-count">(' + newLikeCount + ')</span>');
                 }
             },
             error: function() {

@@ -23,4 +23,10 @@ public class CommentRepoImpl implements CommentRepo {
 		entityManager.merge(c);
 	}
 
+	@Override
+	@Transactional
+	public void delete(Comment c) {
+		entityManager.remove(c);
+	}
+
 }

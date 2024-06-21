@@ -19,7 +19,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="users")
 public class User {
-	
 	@Id
 	@Column(name="username")
 	private String username;

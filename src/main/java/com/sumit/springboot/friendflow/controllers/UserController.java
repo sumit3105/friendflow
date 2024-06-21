@@ -147,6 +147,11 @@ public class UserController {
         return "updateForm";
     }
 
+    @GetMapping("/user/update")
+    public String unknownReq1() {
+    	return "403";
+    }
+      
     @PostMapping("/user/save")
     public String saveProfile(@RequestParam("username") String username, @RequestParam("firstName") String firstName,
                               @RequestParam("lastName") String lastName, @RequestParam("profileDetails") String profileDetails,
@@ -175,6 +180,11 @@ public class UserController {
         userService.updateUser(user);
         UserSessionManager.setUserLoggedIn(session, user);
         return "redirect:/user/home";
+    }
+    
+    @GetMapping("/user/save")
+    public String unknownReq2() {
+    	return "403";
     }
     
     @GetMapping("/user/home")

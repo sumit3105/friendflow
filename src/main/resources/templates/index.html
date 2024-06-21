@@ -1,180 +1,238 @@
 <head th:replace="header2.html"></head>
-	<!-- Page Container -->
-	<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
-	  <!-- The Grid -->
-	  <div class="w3-row">
-	    <!-- Left Column -->
-	    <div class="w3-col m3">
-	      <!-- Profile -->
-	      <div class="w3-card w3-round w3-white">
-	        <div class="w3-container">
-	         <h4 class="w3-center"><span th:text="${user.firstName}"> </span>  <span th:text="${user.lastName}"></span></h4>
-	         <p class="w3-center"><img th:src="@{${user.profileImage.imageUrl}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
-	         <hr>
-	         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> <span th:text="${user.profileDetails}">  </span>
-	         <form action="/" th:action="@{/user/update}" method="post">
-	         	<input type="hidden" name="username" th:value="${user.username}">
-	         	<input type="submit" class="w3-button w3-theme w3-round w3-padding w3-margin-bottom w3-margin-left" value="Update Profile">
-	         </form>
-	        </div>
-	      </div>
-	      <br>
-	      
-	      <!-- Friend request -->
-	      <div class="w3-card w3-round w3-white w3-center">
-		    <div class="w3-container">
-		        <p>Friend Requests</p>
-		        <div th:if="${pending == null or pending.isEmpty()}">
-		            <p>No pending requests</p>
-		        </div>
-		        <div th:if="${pending != null and !pending.isEmpty()}">
-		            <div th:each="u : ${pending}">
-							<a th:href="@{/user/{username}(username=${u.user1.username})}">            
-			                	<img th:src="@{${u.user1.profileImage.imageUrl}}" alt="Profile" class="friend-suggestion-img">
-			                </a>
-			                <br>
-			                <span th:text="${u.user1.firstName + ' ' + u.user1.lastName}"></span><br>
-			                <span th:text="'(' + ${u.user1.username + ')'}"></span>
-			                <div class="w3-row w3-opacity">
-			                    <div class="w3-half">
-			                        <a th:href="@{/friend/accept/{id}(id=${u.id})}"><button class="w3-button w3-block w3-green w3-section" title="Accept">
-			                            <i class="fa fa-check"></i>
-			                        </button></a>
-			                    </div>
-			                    <div class="w3-half">
-			                        <a th:href="@{/friend/decline/{id}(id=${u.id})}"><button class="w3-button w3-block w3-red w3-section" title="Decline">
-			                            <i class="fa fa-remove"></i>
-			                        </button></a>
-			                    </div>
-		               		</div>
-		               		<br>
-		            	</div>
-		        	</div>
-		    	</div>
+<!-- Page Container -->
+<div class="w3-container w3-content"
+	style="max-width: 1400px; margin-top: 80px">
+	<!-- The Grid -->
+	<div class="w3-row">
+		<!-- Left Column -->
+		<div class="w3-col m3">
+			<!-- Profile -->
+			<div class="w3-card w3-round w3-white">
+				<div class="w3-container">
+					<h4 class="w3-center">
+						<span th:text="${user.firstName}"> </span> <span
+							th:text="${user.lastName}"></span>
+					</h4>
+					<p class="w3-center">
+						<img th:src="@{${user.profileImage.imageUrl}}" class="w3-circle"
+							style="height: 106px; width: 106px" alt="Avatar">
+					</p>
+					<h6 class="w3-center" th:text="'(' + ${user.username + ')'}"></h6>
+					<hr>
+					<p>
+						<i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> <span
+							th:text="${user.profileDetails}"> </span>
+					<form action="/" th:action="@{/user/update}" method="post">
+						<input type="hidden" name="username" th:value="${user.username}">
+						<input type="submit"
+							class="w3-button w3-theme w3-round w3-padding w3-margin-bottom w3-margin-left"
+							value="Update Profile">
+					</form>
+				</div>
 			</div>
-	
-	    <!-- End Left Column -->
-	    </div>
-	    
-	    <!-- Middle Column -->
-	    <div class="w3-col m7">
-	    	<div class="w3-container">
-	    		<div th:if="${posts == null or posts.isEmpty()}" class="w3-container w3-card w3-round w3-white">
-		        	<p>Seems like you don't have friends 🧐 or your friends do not have any posts yet. Make friends to view their posts...</p>
-		    	</div>
-		    	<div th:if="${posts != null and !posts.isEmpty()}">
-		    		<div th:each="post, status : ${posts}">
-				      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-					      	<a th:href="@{/user/{username}(username=${post.user.username})}">
-					        	<img th:src="@{${post.user.profileImage.imageUrl}}" alt="Profile" class="w3-left w3-circle w3-margin-right" style="width:50px;height:45px;">
-					       	</a>
-					        <span class="w3-right w3-opacity" th:text="${#dates.format(post.postDate, 'MMM dd, yyyy HH:mm')}"></span>
-					        <h4 th:text="${post.user.firstName} + ' ' + ${post.user.lastName}"></h4><br>
-					        <hr class="w3-clear">
-					        <p th:text="${post.caption}"></p>
-					         <div class="w3-row-padding" style="margin:0 -16px" th:if="${post.images != null}">
-							      <div class="w3-half" th:each="image : ${post.images}">
-							        <img th:src="${image.imageUrl}" style="width:100%;height:250px" alt="Image" class="w3-margin-bottom">
-							      </div>
-							 </div>
-							 
-							 <!-- Like button -->
-					        <button type="button" th:data-postid="${post.id}" class="w3-button w3-theme-d1 w3-margin-bottom like-button" th:classappend="${post.isLikedByUser(user)} ? 'liked' : ''">
-							    <div th:if="${post.isLikedByUser(user)}">
-							        <i class="fa fa-thumbs-up"></i>  Liked <span class="like-count" th:text="'(' + ${post.likes.size() + ')'}"></span> 
-							    </div>
-							    <div th:unless="${post.isLikedByUser(user)}">
-							        <i class="fa fa-thumbs-up"></i>  Like <span class="like-count" th:text="'(' + ${post.likes.size() + ')'}"></span> 
-							    </div>
-							</button>
-								
-							<!-- Comment button -->
-					        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom" th:onclick="'document.getElementById(\'comment' + ${status.index} + '\').style.display=\'block\''">
-					        	<i class="fa fa-comment"></i>  Comment <span class="comment-count" th:text="'(' + ${post.comments.size() + ')'}"></span>
-					        </button> 
-					        	<!-- Modal for comment panel -->
-					        	<div th:id="|comment${status.index}|" class="w3-modal">
-								    <div class="w3-modal-content w3-animate-bottom w3-card-4 modal-flex-container">
-								        <header class="modal-header w3-container w3-teal"> 
-								            <span th:onclick="'document.getElementById(\'comment' + ${status.index} + '\').style.display=\'none\''" class="w3-button w3-display-topright">&times;</span>
-								            <h2>Comments</h2>
-								        </header>
-								        <div class="w3-container comments-container modal-content">
-								            <div th:if="${post.comments == null or post.comments.isEmpty()}">
-								                <p class="w3-center w3-opacity">No Comments Yet. Be first to comment</p>
-								            </div>
-								            <div th:unless="${post.comments == null or post.comments.isEmpty()}">
-								                <div th:each="comment : ${post.comments}">
-								                	<div th:if="${comment.user.username == user.username}">
-									                    <div class="w3-container">
-									                        <p><strong th:text="${comment.user.username + ' (You)'}"></strong></p>
-									                        <p th:text="${comment.comment}"></p>
-									                    </div>
-								                    </div>
-								                    <div th:unless="${comment.user.username == user.username}">
-									                    <div class="w3-container">
-									                        <p><strong th:text="${comment.user.username}"></strong></p>
-									                        <p th:text="${comment.comment}"></p>
-									                    </div>
-								                    </div>
-								                    <hr>
-								                </div>
-								            </div>
-								        </div>
-								        <footer class="modal-footer w3-container w3-teal">
-								            <form name="comment-form" class="comment-form" onsubmit="return checkInput()" th:action="@{/post/comment/{postId}(postId=${post.id})}" method="post">
-								                <div class="w3-container">
-								                    <div class="w3-col m10">
-								                        <input type="text" class="w3-input w3-border w3-margin-top w3-margin-bottom" id="commentIP" name="comment" placeholder="Write Comment Here...">
-								                    </div>
-								                    <div class="w3-col m2">
-								                        <input type="submit" id="commentBtn" class="w3-button w3-theme w3-round w3-margin-top w3-margin-left w3-margin-bottom" value="Comment">
-								                    </div>
-								                </div>
-								            </form>
-								        </footer>
-								    </div>
+			<br>
+
+			<!-- Friend request -->
+			<div class="w3-card w3-round w3-white w3-center">
+				<div class="w3-container">
+					<p>Friend Requests</p>
+					<div th:if="${pending == null or pending.isEmpty()}">
+						<p>No pending requests</p>
+					</div>
+					<div th:if="${pending != null and !pending.isEmpty()}">
+						<div th:each="u : ${pending}">
+							<a th:href="@{/user/{username}(username=${u.user1.username})}">
+								<img th:src="@{${u.user1.profileImage.imageUrl}}" alt="Profile"
+								class="friend-suggestion-img">
+							</a> <br> <span
+								th:text="${u.user1.firstName + ' ' + u.user1.lastName}"></span><br>
+							<span th:text="'(' + ${u.user1.username + ')'}"></span>
+							<div class="w3-row w3-opacity">
+								<div class="w3-half">
+									<a th:href="@{/friend/accept/{id}(id=${u.id})}"><button
+											class="w3-button w3-block w3-green w3-section" title="Accept">
+											<i class="fa fa-check"></i>
+										</button></a>
 								</div>
-				        </div>
-				      </div>
-				 </div>
-		      </div>  
-		 </div>
-	    <!-- End Middle Column -->
-	    
-	    
-	    <!-- Right Column -->
-	    <div class="w3-col m2">
-	      <div class="w3-card w3-round w3-white w3-center">
-	        <div class="w3-container">
-	          <p><strong>Friend Suggestions</strong></p>
-	          <div th:if="${allUser == null or allUser.isEmpty()}">
-	          		<p>No Friend suggestions</p>
-	          </div>
-	          <div th:unless="${allUser == null or allUser.isEmpty()}">
-		          <div th:each="us : ${allUser}">
-			          <p th:text="${us.firstName} + ' ' + ${us.lastName}"><strong></strong></p>
-			          <a th:href="@{/user/{username}(username=${us.username})}">
-			          	<img th:src="@{${us.profileImage.imageUrl}}" alt="User" class="friend-suggestion-img">
-			          </a>
-			          <p th:text="${us.username}"></p>
-			          <a th:href="@{/friend/create/{username}(username=${us.username})}"><button class="w3-button w3-block w3-theme-d1">Send Request</button></a>
-			          <hr>
-			      </div>
-			      <a th:href="@{/friend/all}"><button class="w3-button w3-block w3-theme-d1">View All</button></a>
-			      <hr>
-			  </div>
-	        </div>
-	      </div>
-	      <br>    
-	    <!-- End Right Column -->
-	    </div>
-	    
-	  <!-- End Grid -->
-	  </div>
-	  
-	<!-- End Page Container -->
+								<div class="w3-half">
+									<a th:href="@{/friend/decline/{id}(id=${u.id})}"><button
+											class="w3-button w3-block w3-red w3-section" title="Decline">
+											<i class="fa fa-remove"></i>
+										</button></a>
+								</div>
+							</div>
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- End Left Column -->
+		</div>
+
+		<!-- Middle Column -->
+		<div class="w3-col m7">
+			<div class="w3-container">
+				<div th:if="${posts == null or posts.isEmpty()}"
+					class="w3-container w3-card w3-round w3-white">
+					<p>Seems like you don't have friends 🧐 or your friends do not
+						have any posts yet. Make friends to view their posts...</p>
+				</div>
+				<div th:if="${posts != null and !posts.isEmpty()}">
+					<div th:each="post, status : ${posts}">
+						<div class="w3-container w3-card w3-white w3-round w3-margin">
+							<br> <a
+								th:href="@{/user/{username}(username=${post.user.username})}">
+								<img th:src="@{${post.user.profileImage.imageUrl}}"
+								alt="Profile" class="w3-left w3-circle w3-margin-right"
+								style="width: 50px; height: 45px;">
+							</a> <span class="w3-right w3-opacity"
+								th:text="${#dates.format(post.postDate, 'MMM dd, yyyy HH:mm')}"></span>
+							<h4
+								th:text="${post.user.firstName} + ' ' + ${post.user.lastName}"></h4>
+							<br>
+							<hr class="w3-clear">
+							<p th:text="${post.caption}"></p>
+							<div class="w3-row-padding" style="margin: 0 -16px"
+								th:if="${post.images != null}">
+								<div class="w3-half" th:each="image : ${post.images}">
+									<img th:src="${image.imageUrl}"
+										style="max-width: 100%; height: 250px" alt="Image"
+										class="w3-margin-bottom">
+								</div>
+							</div>
+
+							<!-- Like button -->
+							<button type="button" th:data-postid="${post.id}"
+								class="w3-button w3-theme-d1 w3-margin-bottom like-button"
+								th:classappend="${post.isLikedByUser(user)} ? 'liked' : ''">
+								<div th:if="${post.isLikedByUser(user)}">
+									<i class="fa fa-thumbs-up"></i> Liked <span class="like-count"
+										th:text="'(' + ${post.likes.size() + ')'}"></span>
+								</div>
+								<div th:unless="${post.isLikedByUser(user)}">
+									<i class="fa fa-thumbs-up"></i> Like <span class="like-count"
+										th:text="'(' + ${post.likes.size() + ')'}"></span>
+								</div>
+							</button>
+
+							<!-- Comment button -->
+							<button type="button"
+								class="w3-button w3-theme-d2 w3-margin-bottom"
+								th:onclick="'document.getElementById(\'comment' + ${status.index} + '\').style.display=\'block\''">
+								<i class="fa fa-comment"></i>  Comment <span
+									class="comment-count"
+									th:text="'(' + ${post.comments.size() + ')'}"></span>
+							</button>
+							<!-- Modal for comment panel -->
+							<div th:id="|comment${status.index}|" class="w3-modal">
+								<div
+									class="w3-modal-content w3-animate-bottom w3-card-4 modal-flex-container">
+									<header class="modal-header w3-container w3-teal">
+										<span
+											th:onclick="'document.getElementById(\'comment' + ${status.index} + '\').style.display=\'none\''"
+											class="w3-button w3-display-topright">&times;</span>
+										<h2>Comments</h2>
+									</header>
+									<div class="w3-container comments-container modal-content">
+										<div
+											th:if="${post.comments == null or post.comments.isEmpty()}">
+											<p class="w3-center w3-opacity">No Comments Yet. Be first
+												to comment</p>
+										</div>
+										<div
+											th:unless="${post.comments == null or post.comments.isEmpty()}">
+											<div th:each="comment : ${post.comments}">
+												<div th:if="${comment.user.username == user.username}">
+													<div class="w3-container">
+														<p>
+															<strong th:text="${comment.user.username + ' (You)'}"></strong>
+														</p>
+														<p th:text="${comment.comment}"></p>
+													</div>
+												</div>
+												<div th:unless="${comment.user.username == user.username}">
+													<div class="w3-container">
+														<p>
+															<strong th:text="${comment.user.username}"></strong>
+														</p>
+														<p th:text="${comment.comment}"></p>
+													</div>
+												</div>
+												<hr>
+											</div>
+										</div>
+									</div>
+									<footer class="modal-footer w3-container w3-teal">
+										<form name="comment-form" class="comment-form"
+											onsubmit="return checkInput()"
+											th:action="@{/post/comment/{postId}(postId=${post.id})}"
+											method="post">
+											<div class="w3-container">
+												<div class="w3-col m10">
+													<input type="text"
+														class="w3-input w3-border w3-margin-top w3-margin-bottom"
+														id="commentIP" name="comment"
+														placeholder="Write Comment Here...">
+												</div>
+												<div class="w3-col m2">
+													<input type="submit" id="commentBtn"
+														class="w3-button w3-theme w3-round w3-margin-top w3-margin-left w3-margin-bottom"
+														value="Comment">
+												</div>
+											</div>
+										</form>
+									</footer>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Middle Column -->
+
+
+		<!-- Right Column -->
+		<div class="w3-col m2">
+			<div class="w3-card w3-round w3-white w3-center">
+				<div class="w3-container">
+					<p>
+						<strong>Friend Suggestions</strong>
+					</p>
+					<div th:if="${allUser == null or allUser.isEmpty()}">
+						<p>No Friend suggestions</p>
+					</div>
+					<div th:unless="${allUser == null or allUser.isEmpty()}">
+						<div th:each="us : ${allUser}">
+							<p th:text="${us.firstName} + ' ' + ${us.lastName}">
+								<strong></strong>
+							</p>
+							<a th:href="@{/user/{username}(username=${us.username})}"> <img
+								th:src="@{${us.profileImage.imageUrl}}" alt="User"
+								class="friend-suggestion-img">
+							</a>
+							<p th:text="${us.username}"></p>
+							<a
+								th:href="@{/friend/create/{username}(username=${us.username})}"><button
+									class="w3-button w3-block w3-theme-d1">Send Request</button></a>
+							<hr>
+						</div>
+						<a th:href="@{/friend/all}"><button
+								class="w3-button w3-block w3-theme-d1">View All</button></a>
+						<hr>
+					</div>
+				</div>
+			</div>
+			<br>
+			<!-- End Right Column -->
+		</div>
+
+		<!-- End Grid -->
 	</div>
-	<br>
+
+	<!-- End Page Container -->
+</div>
+<br>
 <!-- Include the footer -->
 <head th:replace="footer2.html"></head>

@@ -33,7 +33,7 @@ public class Post {
 	@Column(name="post_date")
     private Date postDate;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
 	
@@ -121,7 +121,9 @@ public class Post {
 	}
 	
 	public boolean isLikedByUser(User user) {
-	    return likes.stream().anyMatch(like -> like.getUser().getUsername().equals(user.getUsername()));
-	}
+        return this.likes.stream()
+                .filter(like -> like.getUser() != null) // Filter out likes with null users
+                .anyMatch(like -> like.getUser().getUsername().equals(user.getUsername()));
+    }
 	
 }

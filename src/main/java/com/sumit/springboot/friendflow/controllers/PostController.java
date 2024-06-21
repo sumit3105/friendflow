@@ -1,16 +1,19 @@
 package com.sumit.springboot.friendflow.controllers;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+//import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sumit.springboot.friendflow.entities.Image;
@@ -76,18 +79,27 @@ public class PostController {
 	}
 	
 	@PostMapping("/like/{postId}")
-	public ResponseEntity<Void> likeOrDislikePost(@PathVariable int postId, HttpSession session){
-		User user = UserSessionManager.getLoggedInUser(session);
-		Post post = postService.getPostById(postId);
-		
-		if (post.isLikedByUser(user)) {
-            // If already liked, remove the like
-            postService.unlikePost(post, user);
-        } else {
-            // Otherwise, add a new like
-            postService.likePost(postId, user);
-        }
-		return ResponseEntity.ok().build();
+	@ResponseBody
+	public Map<String, Object>  likeOrDislikePost(@PathVariable int postId, HttpSession session){
+	    User user = UserSessionManager.getLoggedInUser(session);
+	    Post post = postService.getPostById(postId);
+	    
+	    if (post.isLikedByUser(user)) {
+	        // If already liked, remove the like
+	        post = postService.unlikePost(post, user);
+	    } else {
+	        // Otherwise, add a new like
+	        post = postService.likePost(postId, user);
+	    }
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("likeCount", post.getLikes().size());
+	    response.put("isLiked", post.isLikedByUser(user));
+	    return response;
+	}
+	
+	@GetMapping("/like/{postId}")
+	public String unknownReq1() {
+		return "403";
 	}
 	
 	@PostMapping("/comment/{postId}")
@@ -96,5 +108,10 @@ public class PostController {
 		postService.addComment(postId, caption, u);
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
+	}
+	
+	@GetMapping("/comment/{postId}")
+	public String unknownReq2() {
+		return "403";
 	}
 }

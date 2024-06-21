@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sumit.springboot.friendflow.entities.Comment;
@@ -82,25 +81,46 @@ public class PostService {
 		return postRepository.findById(id);
 	}
 
-	@Transactional
 	public void removePost(int id, HttpSession session) {
 		User user = UserSessionManager.getLoggedInUser(session);
 		Post p = postRepository.findById(id);
 		if (p != null) {
+			
 			List<Image> images = p.getImages();
 			if (images != null && !images.isEmpty()) {
 				for (Image image : images) {
 					imageRepository.delete(image);
 				}				
 			}			
-						
+			
+			List<Like> likes = p.getLikes();
+			if(likes != null && !likes.isEmpty()) {
+				for(Like like : likes) {
+					likeRepository.delete(like);
+				}
+			}
+			
+			List<Comment> comments = p.getComments();
+			if(comments != null && !comments.isEmpty()) {
+				for(Comment comment : comments) {
+					commentRepo.delete(comment);
+				}
+			}
 			
 			List<Post> pt = user.getPosts();
 			
-			System.out.println(pt.remove(p));
+			if(pt != null && !pt.isEmpty()) {
+				for(Post post : pt) {
+					if(post.getId() == p.getId()) {
+						System.out.println(pt.remove(post));
+						break;
+					}
+				}
+			}
+			
 			System.out.println("--------------------Posts from service--------------------");
-			System.out.println(user.getPosts());
 			user.setPosts(pt);
+			System.out.println(user.getPosts());
 			userRepository.save(user);
 			postRepository.delete(p);
 			UserSessionManager.setUserLoggedIn(session, user);
@@ -115,7 +135,7 @@ public class PostService {
 		return postRepository.findPostOfUser(username);
 	}
 	
-	public void likePost(int id, User u) {
+	public Post likePost(int id, User u) {
 		Post p = postRepository.findById(id);
 		
 		Like like = new Like(p, u);
@@ -127,9 +147,11 @@ public class PostService {
 
 		postRepository.save(p);
 		
+		return p;
+		
 	}
 	
-	public void unlikePost(Post p, User u) {
+	public Post unlikePost(Post p, User u) {
 		Like like = p.getLikes().stream()
                 .filter(l -> l.getUser().getUsername().equals(u.getUsername()))
                 .findFirst()
@@ -139,8 +161,10 @@ public class PostService {
             p.getLikes().remove(like);
             likeRepository.delete(like);
             postRepository.save(p);
+            
+            return p;
         }
-		
+		return null;
 	}
 	
 	public void addComment(int postId, String comment, User u) {
