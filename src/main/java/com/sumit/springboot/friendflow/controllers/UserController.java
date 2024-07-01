@@ -198,10 +198,12 @@ public class UserController {
         List<Friendship> pending = friendService.getPending(user);
         model.addAttribute("pending", pending);
         
+        List<Friendship> frn = user.getFriendships();
+        
         List<Post> posts = postService.getPostsOfFriends(user);
         model.addAttribute("posts", posts);
         
-        for(Friendship f : pending) {
+        for(Friendship f : frn) {
         	System.out.println(f);        	
         }
         

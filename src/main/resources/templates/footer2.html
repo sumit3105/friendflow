@@ -6,37 +6,6 @@
 </footer>
  <script type="text/javascript" th:src="@{/js/script.js}"></script>
 <script>
-//js for like fuctionality
-$(document).ready(function() {
-    $('.like-button').click(function() {
-        var postId = $(this).data('postid');
-        var likeButton = $(this);
-        var likeCountSpan = likeButton.find('.like-count');
-
-        $.ajax({
-            type: 'POST',
-            url: '/post/like/' + postId,
-            success: function(response) {
-                var newLikeCount = response.likeCount;
-                var isLiked = response.isLiked;
-                
-                likeCountSpan.text('(' + newLikeCount + ')');
-                
-                if (isLiked) {
-                    likeButton.addClass('liked');
-                    likeButton.html('<i class="fa fa-thumbs-up"></i>  Liked <span class="like-count">(' + newLikeCount + ')</span>');
-                } else {
-                    likeButton.removeClass('liked');
-                    likeButton.html('<i class="fa fa-thumbs-up"></i>  Like <span class="like-count">(' + newLikeCount + ')</span>');
-                }
-            },
-            error: function() {
-                alert('Error liking the post.');
-            }
-        });
-    });
-});
-
 // Accordion
 function myFunction(id) {
   var x = document.getElementById(id);

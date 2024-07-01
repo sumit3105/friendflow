@@ -26,7 +26,7 @@ public class Post {
 	@Column(name="post_id")
 	private int id;
 
-	@Column(name="caption")
+	@Column(name="caption", length=1000)
 	private String caption;
 	
 	@Temporal(TemporalType.TIMESTAMP)

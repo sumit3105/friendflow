@@ -42,7 +42,7 @@ public class User {
 	@JoinColumn(name = "profile_img") 
 	private Image profileImage;
 	
-	@OneToMany(mappedBy = "user1")
+	@OneToMany(mappedBy = "user1", fetch = FetchType.EAGER)
     private List<Friendship> friendships;
 	
 	public User() {

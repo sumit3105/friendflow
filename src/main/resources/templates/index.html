@@ -15,7 +15,7 @@
 					</h4>
 					<p class="w3-center">
 						<img th:src="@{${user.profileImage.imageUrl}}" class="w3-circle"
-							style="height: 106px; width: 106px" alt="Avatar">
+							style="height: 106px; width: 106px" alt="Profile">
 					</p>
 					<h6 class="w3-center" th:text="'(' + ${user.username + ')'}"></h6>
 					<hr>
@@ -146,6 +146,8 @@
 												<div th:if="${comment.user.username == user.username}">
 													<div class="w3-container">
 														<p>
+															<span class="w3-right w3-opacity"
+																th:text="${#dates.format(comment.date, 'MMM dd, yyyy HH:mm')}"></span>
 															<strong th:text="${comment.user.username + ' (You)'}"></strong>
 														</p>
 														<p th:text="${comment.comment}"></p>
@@ -154,6 +156,8 @@
 												<div th:unless="${comment.user.username == user.username}">
 													<div class="w3-container">
 														<p>
+															<span class="w3-right w3-opacity"
+																th:text="${#dates.format(comment.date, 'MMM dd, yyyy HH:mm')}"></span>
 															<strong th:text="${comment.user.username}"></strong>
 														</p>
 														<p th:text="${comment.comment}"></p>
