@@ -1,6 +1,6 @@
 # FriendFlow
 
-Welcome to **FriendFlow**, a social media web application built using Spring Boot MVC. FriendFlow allows users to connect with friends, upload posts, and interact with friends in a user-friendly environment.
+Welcome to **FriendFlow**, a social media web application built using Spring MVC. FriendFlow allows users to connect with friends, upload posts, and interact with friends in a user-friendly environment.
 
 ## Key Features
 
